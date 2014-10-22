@@ -9,12 +9,12 @@ public class Game extends javax.swing.JPanel
 	private static final int DMG = 30;
 	private int height;
 	private int width;
-
+	
 	Cell[][] grid;
 	
 	Game() {
 		super();
-		height = HEIGHT+2;	// an extra header row and column
+		height = HEIGHT+1;	// an extra header row and column
 		width = WIDTH+1;
 		setLayout(new java.awt.GridLayout(height,width));
 		
@@ -34,20 +34,12 @@ public class Game extends javax.swing.JPanel
 		}
 
 		grid[0][0].setEnabled(false);
-		for (int i = 1; i < height-1; i++) {
+		for (int i = 1; i < height; i++) {
 			grid[i][0].setText("" + i);
 			grid[i][0].setEnabled(false);
 			grid[0][i].setText("" + i);
 			grid[0][i].setEnabled(false);
 		}
-
-		/*grid[10][10].setEnabled(false);
-		//manually disable the dashboard cells
-		for(int i = 0; i < height-1; i++) {
-			grid[10][i].setEnabled(false);
-			grid[i][10].setEnabled(false);
-		}*/
-
 		//Initialize the logic's board set-up
 		control.initBoard(grid);
 	}

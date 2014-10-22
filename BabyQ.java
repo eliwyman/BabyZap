@@ -1,3 +1,8 @@
+import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+
 public class BabyQ extends javax.swing.JFrame
 /* Purpose: Implements a top level window to contain the BabyQ game.*/
 {
@@ -10,8 +15,23 @@ public class BabyQ extends javax.swing.JFrame
         setTitle("Baby Q");
         setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
-        add(new Game());
+        //Set up the BorderLayout
+        Container pane = getContentPane();
 
+        if (!(pane.getLayout() instanceof BorderLayout)) {
+            pane.add(new JLabel("Container doesn't use BorderLayout!"));
+            return;
+        }
+
+        //Add dashboard
+         JTextArea field = new JTextArea(); 
+		field.setPreferredSize(new Dimension(200, 100));        
+        pane.add(field, BorderLayout.PAGE_START);
+
+        pane.add(new Game(), BorderLayout.CENTER);
+        //add(new Game());
+
+    	
 		setSize(1000,1000);
         setLocationRelativeTo(null);
     }
