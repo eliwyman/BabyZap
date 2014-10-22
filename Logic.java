@@ -44,7 +44,7 @@ public class Logic
 		if (surviveTurn()) {
 			moveShip(dist);
 		} else {
-			endGame();
+			endGame(false);
 		}
 		System.out.println("Current Energy:"+s.getEnergy());
     }
@@ -70,6 +70,8 @@ public class Logic
     private void moveShip(int dist) {
 		if(newR == shipR && newC == shipC){
 			s.shipHeal();
+		} else if (newR == 9 && newC == 9){
+			endGame(true);
 		} else {
 			grid[shipR][shipC].setText("");
     		shipR = newR;
@@ -88,24 +90,32 @@ public class Logic
     	return 1;
     }
 
-    private void endGame(){
-    	//declare all cells false are whatever
-		for (int i = 1; i < HEIGHT; i++) {
-			for (int j = 1; j < HEIGHT; j++) {
+    private void endGame(boolean won){
+    	//declare all cells false
+		for (int i = 1; i <= HEIGHT; i++) {
+			for (int j = 1; j <= HEIGHT; j++) {
 			    grid[i][j].setText("");
 			    grid[i][j].setEnabled(false);
 			    grid[j][j].setText("");
 			    grid[i][j].setEnabled(false);
 			}
 		}
-		//print "YOU LOST!" on the cells 3-4-5
+
+		//print "YOU on the cells
 		grid[6][4].setText("Y");
 		grid[6][5].setText("O");
 		grid[6][6].setText("U");
-		grid[4][3].setText("L");
-		grid[4][4].setText("O");
-		grid[4][5].setText("S");
-		grid[4][6].setText("T");
-		grid[4][7].setText("!");
-    };
+
+		if(won){
+			grid[4][4].setText("W");
+			grid[4][5].setText("O");
+			grid[4][6].setText("N");
+		} else {
+			grid[4][3].setText("L");
+			grid[4][4].setText("O");
+			grid[4][5].setText("S");
+			grid[4][6].setText("T");
+			grid[4][7].setText("!");
+    	}
+    }
 }

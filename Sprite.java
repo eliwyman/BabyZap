@@ -8,6 +8,7 @@ public class Sprite
 	private final long MAX;
 	private final long DMG;
 	private final float DMGMOD;
+	private final float HEALTHMOD;
 
 	private long energy;
 
@@ -17,6 +18,7 @@ public class Sprite
 		MAX = m;
 		DMG = d;
 		DMGMOD = (float)(DMG/100f);
+		HEALTHMOD = (float)(10f/100f);	//FIX, weird error otherwise
 	}
 
 	public String getShip(){
@@ -55,11 +57,13 @@ public class Sprite
 			damage = energy * DMGMOD;
 			energy -= damage;
 		}
-		return(energy < 1);
+		return(energy < 20);
 	}
 
 	public void shipHeal() {
-		energy += 10;
+		System.out.println("Healing.");
+		float health = energy * HEALTHMOD;
+		energy += health;
 	}
 
 }
