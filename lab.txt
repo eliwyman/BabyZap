@@ -1,0 +1,28 @@
+learned to compile whilst including other java classes in the same directory,
+you must:
+
+a) include "package <parent directory>" in each .java file
+	and then compile using "javac <parent>/*.java"
+
+or:
+
+b) make sure you don't include the "package" and compile from the same directory
+
+
++++Class Design+++
+
+What did I learn from smallTalk?
+
+Classes could be more split up:
+
+BabyQ for interface
+
+BabyGame control and logic
+
+BabySprite/board objects
+
+BabyShip?
+
+BabyBoard?
+
+BabyCell
