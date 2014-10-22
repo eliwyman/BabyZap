@@ -11,7 +11,8 @@ public class Logic
 	private int shipR, shipC = 1;
 	//ship destination
 	private int newR, newC;
-	
+	//user turns
+	private int turns = 0;
 
 	Logic(int h, int w, long e, long max, int dmg){
 		
@@ -40,9 +41,10 @@ public class Logic
 		newC = col;
 		newR = row;
 		int dist = distance(newR, newC);
-		if (!s.enoughFuel(dist)) return;
-		if (surviveTurn()) {
+		if (!s.enoughFuel(dist) || starGates(newC,newR)) return;
+		if (turns < 100 && surviveTurn()) {
 			moveShip(dist);
+			turns++;
 		} else {
 			endGame(false);
 		}
@@ -71,6 +73,7 @@ public class Logic
 		if(newR == shipR && newC == shipC){
 			s.shipHeal();
 		} else if (newR == 9 && newC == 9){
+			s.useFuel(dist);
 			endGame(true);
 		} else {
 			grid[shipR][shipC].setText("");
@@ -84,10 +87,15 @@ public class Logic
 
     private int handleMine(int x, int y) {
     	if (!(x == newR && y == newC)) {
-    		grid[x][y].setText(s.getMine());
+    		if(!(starGates(x,y)) && !(x == 9 && y == 9)) grid[x][y].setText(s.getMine());
     		return 0;
+    	} else {
+    		return 1;
     	}
-    	return 1;
+    }
+
+    private boolean starGates(int x, int y) {
+    	return ((x == 8 && y == 8) || (x == 8 && y == 9) || (x == 9 && y == 8));
     }
 
     private void endGame(boolean won){
