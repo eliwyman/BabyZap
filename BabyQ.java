@@ -12,7 +12,7 @@ public class BabyQ extends javax.swing.JFrame
 
         add(new Game());
 
-	setSize(1000,1000);
+		setSize(1000,1000);
         setLocationRelativeTo(null);
     }
 
