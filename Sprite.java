@@ -47,6 +47,8 @@ public class Sprite
 	}
 
 	public void useFuel(int dist) {
+
+		System.out.println(dist);
 		System.out.println(dist*100);
 		energy -= dist*100;
 	}

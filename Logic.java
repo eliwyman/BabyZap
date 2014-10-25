@@ -144,6 +144,7 @@ public class Logic
 
     private void turnDisplay(String s) {
     	display = display + s + "\n";
+    	System.out.println("display");
     }
 
     private void printTurn() {
