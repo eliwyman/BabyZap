@@ -1,4 +1,5 @@
-import javax.swing.*;
+import javax.swing.JTextArea;
+import javax.swing.JLabel;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -24,11 +25,12 @@ public class BabyQ extends javax.swing.JFrame
         }
 
         //Add dashboard
-         JTextArea field = new JTextArea(); 
+        JTextArea field = new JTextArea(); 
+        field.setEnabled(false);
+        field.setText("BabyQ Game, Click a cell!");
 		field.setPreferredSize(new Dimension(200, 100));        
         pane.add(field, BorderLayout.PAGE_START);
-
-        pane.add(new Game(), BorderLayout.CENTER);
+        pane.add(new Game(field), BorderLayout.CENTER);
         //add(new Game());
 
     	

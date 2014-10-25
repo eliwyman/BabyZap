@@ -1,4 +1,6 @@
-public class Game extends javax.swing.JPanel	
+import javax.swing.JTextArea;
+
+public class Game extends javax.swing.JPanel
 /* Purpose: Draws a grid of buttons that can be used to implement a grid game.
 */
 {
@@ -12,7 +14,7 @@ public class Game extends javax.swing.JPanel
 	
 	Cell[][] grid;
 	
-	Game() {
+	Game(JTextArea field) {
 		super();
 		height = HEIGHT+1;	// an extra header row and column
 		width = WIDTH+1;
@@ -41,6 +43,6 @@ public class Game extends javax.swing.JPanel
 			grid[0][i].setEnabled(false);
 		}
 		//Initialize the logic's board set-up
-		control.initBoard(grid);
+		control.initBoard(grid, field);
 	}
 }

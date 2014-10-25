@@ -1,3 +1,5 @@
+import javax.swing.JTextArea;
+
 public class Logic
 {
 
@@ -7,23 +9,28 @@ public class Logic
 
 	private Sprite s;
 	private Cell[][] grid;
+	private JTextArea field;
 	//ship co-ordinates
 	private int shipR, shipC = 1;
 	//ship destination
 	private int newR, newC;
 	//user turns
 	private int turns = 0;
+	//turn display
+	private String display;
 
 	Logic(int h, int w, long e, long max, int dmg){
 		
 		HEIGHT = h;
 		WIDTH = w;
 		s = new Sprite(e, max, dmg);
+		display = "";
 
 	}
 
-	public void initBoard(Cell[][] g) {
+	public void initBoard(Cell[][] g, JTextArea f) {
 		grid = g;
+		field = f;
 		//Launch the shuttle
 		grid[1][1].setText(s.getShip());
 		shipR = shipC = 1;
@@ -37,18 +44,24 @@ public class Logic
 	}
 
 	public void userMove(int row, int col) {
-		System.out.println("You clicked on ("+row+","+col+")");
 		newC = col;
 		newR = row;
 		int dist = distance(newR, newC);
-		if (!s.enoughFuel(dist) || starGates(newC,newR)) return;
-		if (turns < 100 && surviveTurn()) {
+		if (!s.enoughFuel(dist) || starGates(newC,newR)) {
+			turnDisplay("Invalid Move"); 
+			turnDisplay("Current Energy:"+s.getEnergy());
+			printTurn();
+			return;
+		} else if (turns < 100 && surviveTurn()) {
 			moveShip(dist);
 			turns++;
 		} else {
+			turnDisplay("MAYDAY, MAYDAY, We're going down!");
+			printTurn();
 			endGame(false);
 		}
-		System.out.println("Current Energy:"+s.getEnergy());
+		turnDisplay("Current Energy:"+s.getEnergy());
+		printTurn();
     }
 
     private int distance(int row, int col) {
@@ -65,6 +78,7 @@ public class Logic
     		int x = (int) Math.floor(1.0 + Math.random() * HEIGHT);
     		int y = (int) Math.floor(1.0 + Math.random() * HEIGHT);
     		hits += handleMine(x,y);
+    		if (hits > 0) turnDisplay("Ship's been hit!");
     	}
     	return(!s.shipDead(hits));
     }
@@ -125,5 +139,14 @@ public class Logic
 			grid[4][6].setText("T");
 			grid[4][7].setText("!");
     	}
+    }
+
+    private void turnDisplay(String s) {
+    	display = display + s + "\n";
+    }
+
+    private void printTurn() {
+    	field.setText(display);
+    	display = "";
     }
 }
