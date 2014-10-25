@@ -64,7 +64,7 @@ public class Logic
 		return;
     }
 
-    private int distance(int row, int col) {
+    public int distance(int row, int col) {
     	return (Math.abs(row - shipR) + Math.abs(col - shipC));
     }
 
@@ -99,16 +99,17 @@ public class Logic
     	
     }
 
-    private int handleMine(int x, int y) {
+    public int handleMine(int x, int y) {
     	if (!(x == newR && y == newC)) {
-    		if(!(starGates(x,y)) && !(x == 9 && y == 9)) grid[x][y].setText(s.getMine());
-    		return 0;
-    	} else {
-    		return 1;
+			if(!(starGates(x,y)) && !(x == 9 && y == 9)) {
+				grid[x][y].setText(s.getMine());
+    			return 0;
+    		}
     	}
+    	return 1;
     }
 
-    private boolean starGates(int x, int y) {
+    public boolean starGates(int x, int y) {
     	return ((x == 8 && y == 8) || (x == 8 && y == 9) || (x == 9 && y == 8));
     }
 
@@ -148,5 +149,15 @@ public class Logic
     private void printTurn() {
     	field.setText(display);
     	display = "";
+    }
+
+    public void setCoords(int row, int col){
+    	shipR = row;
+    	shipC = col;
+    }
+
+    public void setNewCoords(int row, int col){
+    	newR = row;
+    	newC = col;
     }
 }
