@@ -51,17 +51,17 @@ public class Logic
 			turnDisplay("Invalid Move"); 
 			turnDisplay("Current Energy:"+s.getEnergy());
 			printTurn();
-			return;
 		} else if (turns < 100 && surviveTurn()) {
 			moveShip(dist);
 			turns++;
+			turnDisplay("Current Energy:"+s.getEnergy());
+			printTurn();
 		} else {
 			turnDisplay("MAYDAY, MAYDAY, We're going down!");
 			printTurn();
 			endGame(false);
 		}
-		turnDisplay("Current Energy:"+s.getEnergy());
-		printTurn();
+		return;
     }
 
     private int distance(int row, int col) {

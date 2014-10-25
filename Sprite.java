@@ -47,6 +47,7 @@ public class Sprite
 	}
 
 	public void useFuel(int dist) {
+		System.out.println(dist*100);
 		energy -= dist*100;
 	}
 
@@ -61,7 +62,6 @@ public class Sprite
 	}
 
 	public void shipHeal() {
-		System.out.println("Healing.");
 		float health = energy * HEALTHMOD;
 		energy += health;
 	}
