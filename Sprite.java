@@ -47,14 +47,10 @@ public class Sprite
 	}
 
 	public void useFuel(int dist) {
-
-		System.out.println(dist);
-		System.out.println(dist*100);
 		energy -= dist*100;
 	}
 
-	public boolean shipDead(int hits) {	 
-		
+	public boolean shipDead(int hits) {	 		
 		float damage;
 		for (int i = 0; i< hits; i++) {
 			damage = energy * DMGMOD;

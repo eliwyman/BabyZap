@@ -57,6 +57,7 @@ public class Logic
 			turnDisplay("Current Energy:"+s.getEnergy());
 			printTurn();
 		} else {
+			turnDisplay("Current Energy:"+s.getEnergy());
 			turnDisplay("MAYDAY, MAYDAY, We're going down!");
 			printTurn();
 			endGame(false);
@@ -144,7 +145,6 @@ public class Logic
 
     private void turnDisplay(String s) {
     	display = display + s + "\n";
-    	System.out.println("display");
     }
 
     private void printTurn() {
