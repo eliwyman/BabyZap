@@ -18,7 +18,7 @@ public class Sprite
 		MAX = m;
 		DMG = d;
 		DMGMOD = (float)(DMG/100f);
-		HEALTHMOD = (float)(10f/100f);	//FIX, weird error otherwise
+		HEALTHMOD = (float)(10f/100f);
 	}
 
 	public String getShip(){

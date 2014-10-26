@@ -16,6 +16,8 @@ public class Logic
 	private int newR, newC;
 	//user turns
 	private int turns = 0;
+	//mine hits per turn
+	private int turnHits;
 	//turn display
 	private String display;
 
@@ -24,6 +26,7 @@ public class Logic
 		HEIGHT = h;
 		WIDTH = w;
 		s = new Sprite(e, max, dmg);
+		turnHits = 0;
 		display = "";
 
 	}
@@ -47,41 +50,60 @@ public class Logic
 		newC = col;
 		newR = row;
 		int dist = distance(newR, newC);
+		//User clicked an invalid cell
 		if (!s.enoughFuel(dist) || starGates(newC,newR)) {
 			turnDisplay("Invalid Move"); 
 			turnDisplay("Current Energy:"+s.getEnergy());
 			printTurn();
-		} else if (turns < 100 && surviveTurn()) {
+		//User ran out of turns
+		} else if (turns > 99) {
+			turnDisplay("You have run out of time!");
+			printTurn();
+			endGame(false);
+		//Ship got hit by a mine
+		} else if (shipHit()) {
+			//Ship ran out of energy
+			if (s.shipDead(turnHits)) {
+				turnDisplay("Current Energy:"+s.getEnergy());
+				turnDisplay("MAYDAY, MAYDAY, We're going down!");
+				printTurn();
+				endGame(false);
+				return;
+			//Ship survived the turn
+			} else {
+				moveShip(dist);
+				turns++;
+				turnDisplay("Current Energy:"+s.getEnergy());
+				printTurn();
+			}
+		//Ship dodged the mines
+		} else {
 			moveShip(dist);
 			turns++;
 			turnDisplay("Current Energy:"+s.getEnergy());
 			printTurn();
-		} else {
-			turnDisplay("Current Energy:"+s.getEnergy());
-			turnDisplay("MAYDAY, MAYDAY, We're going down!");
-			printTurn();
-			endGame(false);
 		}
-		return;
     }
 
     public int distance(int row, int col) {
     	return (Math.abs(row - shipR) + Math.abs(col - shipC));
     }
 
-    private boolean surviveTurn() {
-
-    	int hits = 0;
+    private boolean shipHit() {
+    	turnHits = 0;
     	//pick 1 to 'mines' number of mines
     	int num = (int) Math.floor(1.0 + Math.random() * MINES);
     	//gen 'num' mines
     	for (int i = 0; i < num; i ++){
     		int x = (int) Math.floor(1.0 + Math.random() * HEIGHT);
     		int y = (int) Math.floor(1.0 + Math.random() * HEIGHT);
-    		hits += handleMine(x,y);
-    		if (hits > 0) turnDisplay("Ship's been hit!");
+    		turnHits += handleMine(x,y);
     	}
-    	return(!s.shipDead(hits));
+    	if (turnHits > 0) {
+    		turnDisplay("Ship's been hit!");
+    		return true;
+    	}
+    	return false;
     }
 
     private void moveShip(int dist) {

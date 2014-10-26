@@ -31,7 +31,7 @@ public class LogicDriver {
     	LogicDriver ld = new LogicDriver();
 		Logic l = new Logic(9,9,100,1000,30);
 
-    	System.out.println("Begin Test Bench");
+    	System.out.println("Begin Test Bench\n");
 
     	//Test function: int distance(int row, int col)
     	l.setCoords(0,0);
@@ -86,7 +86,7 @@ public class LogicDriver {
     		if(buckets[i][0] != buckets[i][1]) {
     			System.out.println("Error in Test Case: "+(i+1));
     			System.out.println("Actual Value: "+buckets[i][0]);
-    			System.out.println("Expected Value: "+buckets[i][1]);
+    			System.out.println("Expected Value: "+buckets[i][1]+"\n");
     			errorCount++;
     		}
     	}
@@ -96,9 +96,9 @@ public class LogicDriver {
     		testCount++;
 
     		if(boolBuckets[i][0] != boolBuckets[i][1]) {
-    			System.out.println("Error in Test Case: "+(i+1));
+    			System.out.println("Error in Boolean Test Case: "+(i+1));
     			System.out.println("Actual Value: "+boolBuckets[i][0]);
-    			System.out.println("Expected Value: "+boolBuckets[i][1]);
+    			System.out.println("Expected Value: "+boolBuckets[i][1]+"\n");
     			errorCount++;
     		}
     	}
