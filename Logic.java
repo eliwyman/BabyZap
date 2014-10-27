@@ -1,8 +1,11 @@
 import javax.swing.JTextArea;
 
 public class Logic
+/*OVERVIEW: This class handles all game logic,
+when a cell is clicked it's location is passed to this function
+to handle how the game will react to said mouse action.
+*/
 {
-
 	private final int HEIGHT;
 	private final int WIDTH;
 	private final int MINES = 3;
@@ -22,7 +25,13 @@ public class Logic
 	private String display;
 
 	Logic(int h, int w, long e, long max, int dmg){
-		
+	//REQUIRES: int h, indicating board height (less the row used for index).
+	//REQURES: int w, indicating board width (less the column used for index).
+	//REQUIRES: long e, indicating initial ship energy
+	//REQUIRES: long max, indicating max ship energy		
+	//REQUIRES: int dmg, indicating percentage of damage induced by each mine hit.
+	//MODIFIES: set's the HEIGHT, WIDTH, s, turnHits, and display instance variables.
+
 		HEIGHT = h;
 		WIDTH = w;
 		s = new Sprite(e, max, dmg);
@@ -32,6 +41,11 @@ public class Logic
 	}
 
 	public void initBoard(Cell[][] g, JTextArea f) {
+	//REQUIRES: An instance of the grid
+	//REQUIRES: The JTextArea for the game, used for printing to the user.
+	//MODIFIES: set's the grid and field instance variables.
+	//EFFECTS: Displays the initial board graphics.
+
 		grid = g;
 		field = f;
 		//Launch the shuttle
@@ -42,11 +56,19 @@ public class Logic
 		grid[HEIGHT-1][WIDTH].setText(star);
 		grid[HEIGHT-1][WIDTH-1].setText(star);
 		grid[HEIGHT][WIDTH-1].setText(star);
-		//Generate the wormhole
+		//Generate the star port
 		grid[HEIGHT][WIDTH].setText(s.getPort());
 	}
 
 	public void userMove(int row, int col) {
+	//REQUIRES: int row, indicating where the user clicked.
+	//REQUIRES: int col, indicating where the user clicked.
+	//MODIFIES: newC and newR are set to the new destination of the user.
+	//EFFECTS: Will tell the user they have picked an invalid destination and display their current energy.
+	//EFFECTS: Or, will tell the user they have used up all their turns, and end the game.
+	//EFFECTS: Or, will tell the user they have died and display their current energy, also ending the game.
+	//EFFECTS: Or, will move the user ship to their destination, displaying their current energy.
+
 		newC = col;
 		newR = row;
 		int dist = distance(newR, newC);
@@ -86,10 +108,18 @@ public class Logic
     }
 
     public int distance(int row, int col) {
+	//REQUIRES: int row, indicating where the user clicked, value from 1-9.
+	//REQUIRES: int col, indicating where the user clicked, value from 1-9.
+	//EFFECTS: Returns the distance between current ship co-ordinates and the destination co-ordinates
+    //The algorithm being that a move is equal to the horizontal distance + vertical distance.
+
     	return (Math.abs(row - shipR) + Math.abs(col - shipC));
     }
 
     private boolean shipHit() {
+	//EFFECTS: The computer randomly picks between 1 and 3, and then randomly generates mines and places them on the board.
+	//EFFECTS: Returns true or false indicating whether the ship was hit by mines this turn.
+
     	turnHits = 0;
     	//pick 1 to 'mines' number of mines
     	int num = (int) Math.floor(1.0 + Math.random() * MINES);
@@ -107,7 +137,12 @@ public class Logic
     }
 
     private void moveShip(int dist) {
-		if(newR == shipR && newC == shipC){
+    //REQUIRES: an int dist, specifying the distance of the user's move, between 1-16
+    //EFFECTS: will fuel the ship if it's stays in place,
+    //EFFECTS: or, will end the game if the user moved to the star-port,
+    //EFFECTS: or, will move the ship accordingly to a new cell on the board.
+
+		if(dist == 0){
 			s.shipHeal();
 		} else if (newR == 9 && newC == 9){
 			s.useFuel(dist);
@@ -123,6 +158,12 @@ public class Logic
     }
 
     public int handleMine(int x, int y) {
+    //REQUIRES: an int x, indicating x-co-ordinates for the mine, between 1-9.
+    //REQUIRES: an int y, indicating y-co-ordinates for the mine, between 1-9.
+    //EFFECTS: If the mine was not placed on either: the ship, the star-port, or the stargates,
+    //The mine will be drawn on the board, and this function will return 0.
+    //EFFECTS: Otherwise, this function will return 1.
+
     	if (!(x == newR && y == newC)) {
 			if(!(starGates(x,y)) && !(x == 9 && y == 9)) {
 				grid[x][y].setText(s.getMine());
@@ -133,10 +174,18 @@ public class Logic
     }
 
     public boolean starGates(int x, int y) {
+    //REQUIRES: int x, and int y, indicating co-ordinates.
+    //EFFECTS: will return true if the co-ordinates match starGate locations.
+    //EFFECTS: Otherwise, will return false.
+
     	return ((x == 8 && y == 8) || (x == 8 && y == 9) || (x == 9 && y == 8));
     }
 
     private void endGame(boolean won){
+    //REQUIRES: boolean variable indicating if the user won the game.
+    //MODIFIES: All board-cells become disabled.
+    //EFFECTS: The game ends with a display message based on whether or not the user won the game.
+
     	//declare all cells false
 		for (int i = 1; i <= HEIGHT; i++) {
 			for (int j = 1; j <= HEIGHT; j++) {
@@ -166,20 +215,34 @@ public class Logic
     }
 
     private void turnDisplay(String s) {
+    //REQUIRES: text String with input to be written to the user at end of turn.
+    //MODIFIES: the display String is concatenated with 's'
+
     	display = display + s + "\n";
     }
 
     private void printTurn() {
+    //MODIFIES: The display string is reset to the empty string at the end of this function.
+    //EFFECTS: Prints the contents of the display string to the screen.
+
     	field.setText(display);
     	display = "";
     }
 
     public void setCoords(int row, int col){
+    //REQUIRES: an int row, indicating the ship's x-co-ordinates, between 1 and 9.
+    //REQUIRES: an int col, indicating the ship's y-co-ordinates, between 1 and 9.
+    //MODIFIES: updates the private instance variables shipR and shipC.
+    
     	shipR = row;
     	shipC = col;
     }
 
     public void setNewCoords(int row, int col){
+    //REQUIRES: an int row, indicating the ship's x-co-ordinates, between 1 and 9.
+    //REQUIRES: an int col, indicating the ship's y-co-ordinates, between 1 and 9.
+    //MODIFIES: updates the private instance variables newR and newC.
+    
     	newR = row;
     	newC = col;
     }

@@ -1,7 +1,7 @@
 import javax.swing.JTextArea;
 
 public class Game extends javax.swing.JPanel
-/* Purpose: Draws a grid of buttons that can be used to implement a grid game.
+/* EFFECTS: Draws a grid of buttons that can be used to implement a grid game.
 */
 {
 	public static final int HEIGHT=9;	// default height and width of the play area
@@ -15,6 +15,9 @@ public class Game extends javax.swing.JPanel
 	Cell[][] grid;
 	
 	Game(JTextArea field) {
+	//EFFECTS: Initializes a HEIGHTxWIDTH board with an index,
+	//The '+1' in each dimension used for the index.
+
 		super();
 		height = HEIGHT+1;	// an extra header row and column
 		width = WIDTH+1;

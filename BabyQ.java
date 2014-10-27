@@ -5,14 +5,16 @@ import java.awt.Container;
 import java.awt.Dimension;
 
 public class BabyQ extends javax.swing.JFrame
-/* Purpose: Implements a top level window to contain the BabyQ game.*/
+/* OVERVIEW: Implements a Container that contains a window to contain the BabyQ game and a window to contain output for the game.*/
 {
     BabyQ() {
 	initUI();
     }
 
     private void initUI() {
-        
+    //EFFECTS: Creates a Container to hold a JFrame and JTextArea window to house game contents,
+    //renders it to the center of the screen. 
+
         setTitle("Baby Q");
         setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 
@@ -40,6 +42,8 @@ public class BabyQ extends javax.swing.JFrame
 
 
     public static void main(String[] args) {
+    //EFFECTS: Creates an instance of BabyQ and sets it as visible.
+ 
 	javax.swing.SwingUtilities.invokeLater(new Runnable() {
 		@Override
 		public void run() {

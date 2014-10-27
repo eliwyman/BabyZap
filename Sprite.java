@@ -1,4 +1,8 @@
 public class Sprite
+/* OVERVIEW: Class that contains the sprite graphics for each sprite
+Along with functions to manipulate sprite properties
+Each class instance contains one ship instance.
+*/
 {
 
 	private final String SHIP = "/\\";
@@ -43,14 +47,24 @@ public class Sprite
 	}
 
 	public boolean enoughFuel(int dist) {
+	//REQUIRES: int dist, indicating distance between travel co-ordinates
+	//EFFECTS: returns true/false if the energy is greater than the fuel cost (distance * 100)
+
 		return(energy > dist*100);
 	}
 
 	public void useFuel(int dist) {
+	//REQUIRES: int dist, indicating distance between travel co-ordinates
+	//MODIFIES: decrements the fuel cost from the ship's energy level
+
 		energy -= dist*100;
 	}
 
 	public boolean shipDead(int hits) {	 		
+	//REQUIRES: int hits, indicating how many mine hits the ship has taken
+	//MODIFIES: decrements the damage taken from the ship's energy
+	//EFFECTS: returns true or false if the ship has died (energy drops below 20 units).
+
 		float damage;
 		for (int i = 0; i< hits; i++) {
 			damage = energy * DMGMOD;
@@ -60,6 +74,8 @@ public class Sprite
 	}
 
 	public void shipHeal() {
+	//MODIFIES: increases the ship's energy by the HEALTHMOD percentage.
+
 		float health = energy * HEALTHMOD;
 		energy += health;
 	}

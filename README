@@ -1,0 +1,60 @@
+BabyQ
+
+Building, testing, and running the game:
+
+To build, run:
+
+$ make clean
+
+And then:
+
+$ make
+
+From within the directory containing the makefile, no errors should be reported.
+
+To run the game, run:
+
+$ make run
+
+To perform testing:
+
+$ make test
+
+All test buckets should run without error.
+
+Baby-Q is a game in which the human play tries to navigate the ship '/\' from one corner of the galaxy to the other. At each turn the computer will lay 1-3 mines at random. The players take turns starting with the human player. The player has 100 moves to reach the star port.
+
+Ship
+
+The ship has an energy level which starts at 100 units. The amount of energy consumed moving from sector (0,0) to (x,y) requires 100 times the distance between the two sectors.
+
+E.g. Moving from (2,2) to (4,4) will require 4*100 units of energy.
+
+If the energy falls below 20 units, the ship loses the ability to power both engines and goes down, in which case you die. Be careful how you move!
+
+On a given turn the player can do one of two actions both via mouse
+click:
+
+1. Stay in the current position, increasing the energy level by 10%
+2. Move to another sector, with a corresponding decrease in the energy level.
+
+After the player moves, the computer lays 1-3 '+' mines. If a mine lands on the ship the mine self destructs and the ship's energy decreases by 30%, then after the rest of the mines (if any) have been placed the ship '/\' is returned to the starting position.
+
+If the mine lands on the star gates or the star-port, the mine will destruct with no effect or be whisked away to another galaxy, also not effecting the user.
+
+Class Layout
+
+The BabyQ Class handles creating the jFrame GUI for the game. It utilizes a container to display both a jTextArea, used for communication to the user, and a J...
+
+The Board is enabled in the Game class, it is comprised of a matrix of cells, with the left column and bottom row serving as a grid display.
+
+All game cells are implemented in the Cell class, enabled cells have two functions:
+
+1. Display text
+2. When clicked pass the co-ordinates of itself to the game logic class to handle functionality.
+
+The Logic class handles all the logic for the game. It communicates with the sprite class where sprites are concerned/manipulated.
+
+The sprite class handles the display for each of the four sprites: the ship, mines, gates, and the star-port. It also handles their attributes, such as the ship's energy and interaction with mines.
+
+Back-end testing is performed by two classes: LogicDriver and SpriteDriver, these each handle a set of test benches for the associated class.
