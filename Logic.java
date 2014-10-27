@@ -67,7 +67,8 @@ to handle how the game will react to said mouse action.
 	//EFFECTS: Will tell the user they have picked an invalid destination and display their current energy.
 	//EFFECTS: Or, will tell the user they have used up all their turns, and end the game.
 	//EFFECTS: Or, will tell the user they have died and display their current energy, also ending the game.
-	//EFFECTS: Or, will move the user ship to their destination, displaying their current energy.
+	//EFFECTS: Or, will move the user ship to their destination, either where they clicked or the origin if they were hit.
+	//Displaying their energy.
 
 		newC = col;
 		newR = row;
@@ -93,7 +94,9 @@ to handle how the game will react to said mouse action.
 				return;
 			//Ship survived the turn
 			} else {
-				moveShip(dist);
+				//Reroute the ship to the origin
+				newR = newC = 1;
+				moveShip(0);
 				turns++;
 				turnDisplay("Current Energy:"+s.getEnergy());
 				printTurn();
@@ -140,9 +143,12 @@ to handle how the game will react to said mouse action.
     //REQUIRES: an int dist, specifying the distance of the user's move, between 1-16
     //EFFECTS: will fuel the ship if it's stays in place,
     //EFFECTS: or, will end the game if the user moved to the star-port,
-    //EFFECTS: or, will move the ship accordingly to a new cell on the board.
+    //EFFECTS: or, will move the ship accordingly to a new cell on the board
+    //Ending the game if the user used all his fuel irresponsibly (energy dropped below 20 units).
 
-		if(dist == 0){
+    	//Uses this comparator over (dist == 0), so we are not charged fuel to
+    	//return to the origin when hit by a mine.
+		if(newR == shipR && newC == shipC){
 			s.shipHeal();
 		} else if (newR == 9 && newC == 9){
 			s.useFuel(dist);
@@ -152,9 +158,9 @@ to handle how the game will react to said mouse action.
     		shipR = newR;
 			shipC = newC;
 			grid[shipR][shipC].setText(s.getShip());
-			s.useFuel(dist);	
+			s.useFuel(dist);
+			if (s.shipDead()) endGame(false);
 		}
-    	
     }
 
     public int handleMine(int x, int y) {

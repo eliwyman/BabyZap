@@ -60,6 +60,13 @@ Each class instance contains one ship instance.
 		energy -= dist*100;
 	}
 
+
+	public boolean shipDead() {
+	//EFFECTS: returns true or false if the ship has died (energy drops below 20 units).
+	
+		return(energy < 20);
+	}
+
 	public boolean shipDead(int hits) {	 		
 	//REQUIRES: int hits, indicating how many mine hits the ship has taken
 	//MODIFIES: decrements the damage taken from the ship's energy

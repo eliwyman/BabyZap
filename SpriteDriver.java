@@ -10,7 +10,7 @@ public class SpriteDriver {
 	
     	int testCount = 0;
     	int errorCount = 0;
-    	int numBoolBuckets = 6;
+    	int numBoolBuckets = 9;
     	int numSBuckets = 8;
 
     	//2-d array of integer test buckets, 
@@ -58,6 +58,21 @@ public class SpriteDriver {
         boolBuckets[5][0] = s.shipDead(4);
         boolBuckets[5][1] = true;
         //End test of function: boolean s.shipDead(int hits)
+
+        //Test function: boolean s.shipDead()
+        //Reset class instances
+        s = new Sprite(100,1000,30);
+        Sprite s2 = new Sprite(20,1000,30);
+        Sprite s3 = new Sprite(10,1000,30);
+
+        boolBuckets[6][0] = s.shipDead();
+        boolBuckets[6][1] = false;
+        boolBuckets[7][0] = s2.shipDead();
+        boolBuckets[7][1] = false;
+        boolBuckets[8][0] = s3.shipDead();
+        boolBuckets[8][1] = true;
+        //End test of function: boolean s.shipDead()
+
 
     	for(int i = 0; i < numSBuckets; i+=2) {
 
