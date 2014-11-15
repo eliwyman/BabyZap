@@ -72,7 +72,7 @@ to handle how the game will react to said mouse action.
 
 		newC = col;
 		newR = row;
-		int dist = distance(newR, newC);
+		double dist = distance(newR, newC);
 		//User clicked an invalid cell
 		if (!s.enoughFuel(dist) || starGates(newC,newR)) {
 			turnDisplay("Invalid Move"); 
@@ -110,13 +110,18 @@ to handle how the game will react to said mouse action.
 		}
     }
 
-    public int distance(int row, int col) {
+    public double distance(int row, int col) {
 	//REQUIRES: int row, indicating where the user clicked, value from 1-9.
 	//REQUIRES: int col, indicating where the user clicked, value from 1-9.
 	//EFFECTS: Returns the distance between current ship co-ordinates and the destination co-ordinates
     //The algorithm being that a move is equal to the horizontal distance + vertical distance.
 
-    	return (Math.abs(row - shipR) + Math.abs(col - shipC));
+    	double x1 = row;
+    	double x2 = shipR;
+    	double y1 = col;
+    	double y2 = shipC;
+
+    	return (Math.hypot(Math.abs(x1 - x2), Math.abs(y1 - y2)));
     }
 
     private boolean shipHit() {
@@ -139,7 +144,7 @@ to handle how the game will react to said mouse action.
     	return false;
     }
 
-    private void moveShip(int dist) {
+    private void moveShip(double dist) {
     //REQUIRES: an int dist, specifying the distance of the user's move, between 1-16
     //EFFECTS: will fuel the ship if it's stays in place,
     //EFFECTS: or, will end the game if the user moved to the star-port,

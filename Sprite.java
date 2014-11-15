@@ -46,14 +46,14 @@ Each class instance contains one ship instance.
 		return this.energy;
 	}
 
-	public boolean enoughFuel(int dist) {
+	public boolean enoughFuel(double dist) {
 	//REQUIRES: int dist, indicating distance between travel co-ordinates
 	//EFFECTS: returns true/false if the energy is greater than the fuel cost (distance * 100)
 
 		return(energy > dist*100);
 	}
 
-	public void useFuel(int dist) {
+	public void useFuel(double dist) {
 	//REQUIRES: int dist, indicating distance between travel co-ordinates
 	//MODIFIES: decrements the fuel cost from the ship's energy level
 
