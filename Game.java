@@ -24,7 +24,7 @@ public class Game extends javax.swing.JPanel
 		setLayout(new java.awt.GridLayout(height,width));
 		
 		//Create the Logic Class, the Controller for the Game
-		Logic control = new Logic(HEIGHT, WIDTH, ENERGY, MAX, DMG);
+		Logic control = new Logic(HEIGHT, WIDTH);
 		
 		// Generate the grid
 		grid = new Cell[height][width];

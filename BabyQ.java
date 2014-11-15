@@ -7,6 +7,11 @@ import java.awt.Dimension;
 public class BabyQ extends javax.swing.JFrame
 /* OVERVIEW: Implements a Container that contains a window to contain the BabyQ game and a window to contain output for the game.*/
 {
+
+    private final int PREFERRED_HEIGHT = 100;
+    private final int PREFERRED_WIDTH = 200;
+    private final int SIZE = 1000;
+
     BabyQ() {
 	initUI();
     }
@@ -30,13 +35,13 @@ public class BabyQ extends javax.swing.JFrame
         JTextArea field = new JTextArea(); 
         field.setEnabled(false);
         field.setText("BabyQ Game, Click a cell!");
-		field.setPreferredSize(new Dimension(200, 100));        
+		field.setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));        
         pane.add(field, BorderLayout.PAGE_START);
         pane.add(new Game(field), BorderLayout.CENTER);
         //add(new Game());
 
     	
-		setSize(1000,1000);
+		setSize(SIZE, SIZE);
         setLocationRelativeTo(null);
     }
 

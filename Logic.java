@@ -27,7 +27,7 @@ to handle how the game will react to said mouse action.
 	//turn display
 	private String display;
 
-	Logic(int h, int w, long e, long max, int dmg){
+	Logic(int h, int w){
 	//REQUIRES: int h, indicating board height (less the row used for index).
 	//REQURES: int w, indicating board width (less the column used for index).
 	//REQUIRES: long e, indicating initial ship energy
@@ -37,7 +37,7 @@ to handle how the game will react to said mouse action.
 
 		HEIGHT = h;
 		WIDTH = w;
-		s = new Sprite(e, max, dmg);
+		s = new Sprite();
 		turnHits = 0;
 		display = "";
 

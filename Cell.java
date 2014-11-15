@@ -9,7 +9,7 @@ public class Cell extends javax.swing.JButton implements java.awt.event.ActionLi
     private final int col;
     private final Logic logic;
 
-    Cell(int r, int c, Logic l) {
+    Cell(int row, int col, Logic logic) {
     //REQUIRES: An int r, indicating row index in the grid.
     //REQUIRES: An int c, indicating column index in the grid.
     //REQUIRES: An instance of the Logic class.
@@ -17,9 +17,9 @@ public class Cell extends javax.swing.JButton implements java.awt.event.ActionLi
     //Connects it to the logic class to handle user interaction.
 
 	   super();
-	   row = r;
-	   col = c;
-	   logic = l;
+	   this.row = row;
+	   this.col = col;
+	   this.logic = logic;
 	   addActionListener(this);
     }
     public int getRow() {

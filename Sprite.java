@@ -9,20 +9,15 @@ Each class instance contains one ship instance.
 	private final String MINE = "+";
 	private final String GATE = "><";
 	private final String PORT = "0";
-	private final long MAX;
-	private final long DMG;
 	private final double DMGMOD = 0.3;
 	private final double HEALTHMOD = 0.1;
 	private final long MIN_ENERGY = 20;
 	private final double FUEL_COST = 100;
 
-	private long energy;
+	private long energy = 100;
 
-	Sprite(long e, long m, int d)
+	Sprite()
 	{
-		energy = e;
-		MAX = m;
-		DMG = d;
 	}
 
 	public String getShip(){
