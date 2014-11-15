@@ -13,12 +13,15 @@ to handle how the game will react to said mouse action.
 	private Sprite s;
 	private Cell[][] grid;
 	private JTextArea field;
+	//origin location
+	private final int ORIGIN = 1;
 	//ship co-ordinates
 	private int shipR, shipC = 1;
 	//ship destination
 	private int newR, newC;
 	//user turns
 	private int turns = 0;
+	private final int TURN_LIMIT = 99;
 	//mine hits per turn
 	private int turnHits;
 	//turn display
@@ -79,7 +82,7 @@ to handle how the game will react to said mouse action.
 			turnDisplay("Current Energy:"+s.getEnergy());
 			printTurn();
 		//User ran out of turns
-		} else if (turns > 99) {
+		} else if (turns > TURN_LIMIT) {
 			turnDisplay("You have run out of time!");
 			printTurn();
 			endGame(false);
@@ -95,7 +98,7 @@ to handle how the game will react to said mouse action.
 			//Ship survived the turn
 			} else {
 				//Reroute the ship to the origin
-				newR = newC = 1;
+				newR = newC = ORIGIN;
 				moveShip(0);
 				turns++;
 				turnDisplay("Current Energy:"+s.getEnergy());
@@ -155,7 +158,7 @@ to handle how the game will react to said mouse action.
     	//return to the origin when hit by a mine.
 		if(newR == shipR && newC == shipC){
 			s.shipHeal();
-		} else if (newR == 9 && newC == 9){
+		} else if (newR == HEIGHT && newC == WIDTH){
 			s.useFuel(dist);
 			endGame(true);
 		} else {
@@ -176,7 +179,7 @@ to handle how the game will react to said mouse action.
     //EFFECTS: Otherwise, this function will return 1.
 
     	if (!(x == newR && y == newC)) {
-			if(!(starGates(x,y)) && !(x == 9 && y == 9)) {
+			if(!(starGates(x,y)) && !(x == WIDTH && y == HEIGHT)) {
 				grid[x][y].setText(s.getMine());
     			return 0;
     		}
@@ -189,7 +192,7 @@ to handle how the game will react to said mouse action.
     //EFFECTS: will return true if the co-ordinates match starGate locations.
     //EFFECTS: Otherwise, will return false.
 
-    	return ((x == 8 && y == 8) || (x == 8 && y == 9) || (x == 9 && y == 8));
+    	return ((x == WIDTH && y == HEIGHT) || (x == WIDTH && y == HEIGHT) || (x == WIDTH && y == HEIGHT));
     }
 
     private void endGame(boolean won){
