@@ -6,9 +6,7 @@ public class Game extends javax.swing.JPanel
 {
 	public static final int HEIGHT=9;	// default height and width of the play area
 	public static final int WIDTH=9;
-	public static final long ENERGY = 100;
-	private static final long MAX = 1000;
-	private static final int DMG = 30;
+	private final Logic controller;
 	private int height;
 	private int width;
 	
@@ -24,15 +22,15 @@ public class Game extends javax.swing.JPanel
 		setLayout(new java.awt.GridLayout(height,width));
 		
 		//Create the Logic Class, the Controller for the Game
-		Logic control = new Logic(HEIGHT, WIDTH);
+		controller = new Logic(HEIGHT, WIDTH);
 		
 		// Generate the grid
 		grid = new Cell[height][width];
-		grid[0][0] = new Cell(0, 0, control);
+		grid[0][0] = new Cell(0, 0, controller);
 		
 		for (int i = height-1; i >= 0; i--) {
 			for (int j = 0; j < width; j++) {
-				grid[i][j] = new Cell(i, j, control);
+				grid[i][j] = new Cell(i, j, controller);
 				//Render the grid, natural graph format
 				add(grid[i][j]);
 			}
@@ -46,6 +44,6 @@ public class Game extends javax.swing.JPanel
 			grid[0][i].setEnabled(false);
 		}
 		//Initialize the logic's board set-up
-		control.initBoard(grid, field);
+		controller.initBoard(grid, field);
 	}
 }

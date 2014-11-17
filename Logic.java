@@ -128,19 +128,12 @@ to handle how the game will react to said mouse action.
     }
 
     private boolean shipHit() {
-	//EFFECTS: The computer randomly picks between 1 and 3, and then randomly generates mines and places them on the board.
-	//EFFECTS: Returns true or false indicating whether the ship was hit by mines this turn.
+	//EFFECTS: The computer randomly generates a mine and place it on the board.
+	//EFFECTS: Returns true or false indicating whether the ship was hit by a mine this turn.
+		int x = (int) Math.floor(1.0 + Math.random() * HEIGHT);
+		int y = (int) Math.floor(1.0 + Math.random() * HEIGHT);
 
-    	turnHits = 0;
-    	//pick 1 to 'mines' number of mines
-    	int num = (int) Math.floor(1.0 + Math.random() * MINES);
-    	//gen 'num' mines
-    	for (int i = 0; i < num; i ++){
-    		int x = (int) Math.floor(1.0 + Math.random() * HEIGHT);
-    		int y = (int) Math.floor(1.0 + Math.random() * HEIGHT);
-    		turnHits += handleMine(x,y);
-    	}
-    	if (turnHits > 0) {
+    	if (handleMine(x,y)) {
     		turnDisplay("Ship's been hit!");
     		return true;
     	}
@@ -171,20 +164,20 @@ to handle how the game will react to said mouse action.
 		}
     }
 
-    public int handleMine(int x, int y) {
+    public Boolean handleMine(int x, int y) {
     //REQUIRES: an int x, indicating x-co-ordinates for the mine, between 1-9.
     //REQUIRES: an int y, indicating y-co-ordinates for the mine, between 1-9.
     //EFFECTS: If the mine was not placed on either: the ship, the star-port, or the stargates,
     //The mine will be drawn on the board, and this function will return 0.
-    //EFFECTS: Otherwise, this function will return 1.
+    //EFFECTS: Otherwise, this function will return true.
 
     	if (!(x == newR && y == newC)) {
 			if(!(starGates(x,y)) && !(x == WIDTH && y == HEIGHT)) {
 				grid[x][y].setText(s.getMine());
-    			return 0;
+    			return false;
     		}
     	}
-    	return 1;
+    	return true;
     }
 
     public boolean starGates(int x, int y) {
@@ -192,7 +185,7 @@ to handle how the game will react to said mouse action.
     //EFFECTS: will return true if the co-ordinates match starGate locations.
     //EFFECTS: Otherwise, will return false.
 
-    	return ((x == WIDTH && y == HEIGHT) || (x == WIDTH && y == HEIGHT) || (x == WIDTH && y == HEIGHT));
+    	return ((x == WIDTH-1 && y == HEIGHT) || (x == WIDTH && y == HEIGHT-1) || (x == WIDTH-1 && y == HEIGHT-1));
     }
 
     private void endGame(boolean won){
