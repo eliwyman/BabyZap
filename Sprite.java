@@ -6,7 +6,8 @@ Each class instance contains one ship instance.
 {
 
 	private final String SHIP = "/\\";
-	private final String MINE = "+";
+	private final String K_MINE = "+";
+	private final String L_MINE = "#";
 	private final String GATE = "><";
 	private final String PORT = "0";
 	private final double DMGMOD = 0.3;
@@ -24,8 +25,12 @@ Each class instance contains one ship instance.
 		return this.SHIP;
 	};
 
-	public String getMine(){
-		return this.MINE;
+	public String getKMine(){
+		return this.K_MINE;
+	};
+
+	public String getLMine(){
+		return this.L_MINE;
 	};
 
 	public String getGate()
@@ -62,16 +67,10 @@ Each class instance contains one ship instance.
 		return(energy < MIN_ENERGY);
 	}
 
-	public boolean shipDead(int hits) {	 		
-	//REQUIRES: int hits, indicating how many mine hits the ship has taken
+	public boolean shipHit() {	 		
 	//MODIFIES: decrements the damage taken from the ship's energy
 	//EFFECTS: returns true or false if the ship has died (energy drops below 20 units).
-
-		double damage;
-		for (int i = 0; i< hits; i++) {
-			damage = energy * DMGMOD;
-			energy -= damage;
-		}
+		energy -= energy * DMGMOD;
 		return(shipDead());
 	}
 

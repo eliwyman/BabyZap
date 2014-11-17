@@ -8,9 +8,8 @@ to handle how the game will react to said mouse action.
 {
 	private final int HEIGHT;
 	private final int WIDTH;
-	private final int MINES = 3;
 
-	private Sprite s;
+	private Sprite sprite;
 	private Cell[][] grid;
 	private JTextArea field;
 	//origin location
@@ -22,10 +21,11 @@ to handle how the game will react to said mouse action.
 	//user turns
 	private int turns = 0;
 	private final int TURN_LIMIT = 99;
-	//mine hits per turn
-	private int turnHits;
+	//mine location array
+	private int[][] mines;
 	//turn display
 	private String display;
+
 
 	Logic(int h, int w){
 	//REQUIRES: int h, indicating board height (less the row used for index).
@@ -37,9 +37,15 @@ to handle how the game will react to said mouse action.
 
 		HEIGHT = h;
 		WIDTH = w;
-		s = new Sprite();
-		turnHits = 0;
+		sprite = new Sprite();
 		display = "";
+		mines = new int[HEIGHT][WIDTH];
+
+		for (int i = 0; i < HEIGHT; i++) {
+			for (int j = 0; j < WIDTH; j++) {
+				mines[i][j] = 0;
+			}			
+		}
 
 	}
 
@@ -52,15 +58,15 @@ to handle how the game will react to said mouse action.
 		grid = g;
 		field = f;
 		//Launch the shuttle
-		grid[1][1].setText(s.getShip());
+		grid[1][1].setText(sprite.getShip());
 		shipR = shipC = 1;
 		//Generate the star gates
-		String star = s.getGate();
+		String star = sprite.getGate();
 		grid[HEIGHT-1][WIDTH].setText(star);
 		grid[HEIGHT-1][WIDTH-1].setText(star);
 		grid[HEIGHT][WIDTH-1].setText(star);
 		//Generate the star port
-		grid[HEIGHT][WIDTH].setText(s.getPort());
+		grid[HEIGHT][WIDTH].setText(sprite.getPort());
 	}
 
 	public void userMove(int row, int col) {
@@ -77,9 +83,9 @@ to handle how the game will react to said mouse action.
 		newR = row;
 		double dist = distance(newR, newC);
 		//User clicked an invalid cell
-		if (!s.enoughFuel(dist) || starGates(newC,newR)) {
+		if (!sprite.enoughFuel(dist) || starGates(newC,newR)) {
 			turnDisplay("Invalid Move"); 
-			turnDisplay("Current Energy:"+s.getEnergy());
+			turnDisplay("Current Energy:"+sprite.getEnergy());
 			printTurn();
 		//User ran out of turns
 		} else if (turns > TURN_LIMIT) {
@@ -89,8 +95,8 @@ to handle how the game will react to said mouse action.
 		//Ship got hit by a mine
 		} else if (shipHit()) {
 			//Ship ran out of energy
-			if (s.shipDead(turnHits)) {
-				turnDisplay("Current Energy:"+s.getEnergy());
+			if (sprite.shipHit()) {
+				turnDisplay("Current Energy:"+sprite.getEnergy());
 				turnDisplay("MAYDAY, MAYDAY, We're going down!");
 				printTurn();
 				endGame(false);
@@ -101,14 +107,14 @@ to handle how the game will react to said mouse action.
 				newR = newC = ORIGIN;
 				moveShip(0);
 				turns++;
-				turnDisplay("Current Energy:"+s.getEnergy());
+				turnDisplay("Current Energy:"+sprite.getEnergy());
 				printTurn();
 			}
 		//Ship dodged the mines
 		} else {
 			moveShip(dist);
 			turns++;
-			turnDisplay("Current Energy:"+s.getEnergy());
+			turnDisplay("Current Energy:"+sprite.getEnergy());
 			printTurn();
 		}
     }
@@ -137,6 +143,8 @@ to handle how the game will react to said mouse action.
     		turnDisplay("Ship's been hit!");
     		return true;
     	}
+
+
     	return false;
     }
 
@@ -150,17 +158,18 @@ to handle how the game will react to said mouse action.
     	//Uses this comparator over (dist == 0), so we are not charged fuel to
     	//return to the origin when hit by a mine.
 		if(newR == shipR && newC == shipC){
-			s.shipHeal();
+			sprite.shipHeal();
 		} else if (newR == HEIGHT && newC == WIDTH){
-			s.useFuel(dist);
+			sprite.useFuel(dist);
 			endGame(true);
 		} else {
 			grid[shipR][shipC].setText("");
     		shipR = newR;
 			shipC = newC;
-			grid[shipR][shipC].setText(s.getShip());
-			s.useFuel(dist);
-			if (s.shipDead()) endGame(false);
+			grid[shipR][shipC].setText(sprite.getShip());
+			mines[shipR][shipC] = 0;
+			sprite.useFuel(dist);
+			if (sprite.shipDead()) endGame(false);
 		}
     }
 
@@ -173,7 +182,13 @@ to handle how the game will react to said mouse action.
 
     	if (!(x == newR && y == newC)) {
 			if(!(starGates(x,y)) && !(x == WIDTH && y == HEIGHT)) {
-				grid[x][y].setText(s.getMine());
+				if (mines[x][y] == 0) {
+					grid[x][y].setText(sprite.getKMine());
+					mines[x][y] = 1;
+				} else {
+					grid[x][y].setText(sprite.getLMine());
+					mines[x][y] = 2;
+				}
     			return false;
     		}
     	}
