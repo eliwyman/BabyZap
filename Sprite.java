@@ -10,7 +10,8 @@ Each class instance contains one ship instance.
 	private final String L_MINE = "#";
 	private final String GATE = "><";
 	private final String PORT = "0";
-	private final double DMGMOD = 0.3;
+	private final double KDMGMOD = 0.3;
+	private final double LDMGMOD = 0.3;
 	private final double HEALTHMOD = 0.1;
 	private final long MIN_ENERGY = 20;
 	private final double FUEL_COST = 100;
@@ -67,10 +68,18 @@ Each class instance contains one ship instance.
 		return(energy < MIN_ENERGY);
 	}
 
-	public boolean shipHit() {	 		
+	public boolean shipKMineHit() {	 		
 	//MODIFIES: decrements the damage taken from the ship's energy
 	//EFFECTS: returns true or false if the ship has died (energy drops below 20 units).
-		energy -= energy * DMGMOD;
+		energy -= energy * KDMGMOD;
+		return(shipDead());
+	}
+
+
+	public boolean shipLMineHit(int hits) {	 		
+	//MODIFIES: decrements the damage taken from the ship's energy
+	//EFFECTS: returns true or false if the ship has died (energy drops below 20 units).
+		for (int i = 0; i < hits; i++) energy -= energy * LDMGMOD;
 		return(shipDead());
 	}
 

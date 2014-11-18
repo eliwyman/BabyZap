@@ -26,6 +26,7 @@ to handle how the game will react to said mouse action.
 	private int turns = 0;
 	//mine location array
 	private int[][] mines;
+	private int numLMines;
 	//turn display
 	private String display;
 
@@ -43,6 +44,7 @@ to handle how the game will react to said mouse action.
 		sprite = new Sprite();
 		display = "";
 		mines = new int[HEIGHT][WIDTH];
+		numLMines = 0;
 
 		for (int i = 0; i < HEIGHT; i++) {
 			for (int j = 0; j < WIDTH; j++) {
@@ -108,10 +110,22 @@ to handle how the game will react to said mouse action.
 
     private void AIMove() {
 
-    	//We have hit the ship!
+    	//Fire the l-Mine weapons
+    	int numHits = fireLMine();
+
+    	if (numHits > 0) turnDisplay("Ship's been hit by an l-mine!");
+
+    	if (sprite.shipLMineHit(numHits)) {
+			turnDisplay("Current Energy:"+sprite.getEnergy());
+			turnDisplay("MAYDAY, MAYDAY, We're going down!");
+			printTurn();
+			endGame(false);
+    	}
+
+    	//We have landed a k-mine on the ship!
 		if (shipHit()) {
 			//We have destroyed the ship!
-			if (sprite.shipHit()) {
+			if (sprite.shipDead()) {
 				turnDisplay("Current Energy:"+sprite.getEnergy());
 				turnDisplay("MAYDAY, MAYDAY, We're going down!");
 				printTurn();
@@ -144,6 +158,27 @@ to handle how the game will react to said mouse action.
     	return (Math.hypot(Math.abs(x1 - x2), Math.abs(y1 - y2)));
     }
 
+    private int fireLMine() {
+    	
+    	int hits = 0;
+    	//keep variable of numLMines
+    	//return false if num == 0
+    	if (numLMines == 0) {
+    		return 0;
+    	} else {
+	    	//look at each LMine if x & y are within 2 spots, ship got hit, but continue!
+	    	for (int i = 0; i < HEIGHT; i++) {
+	    		for (int j = 0; j < WIDTH; j++) {
+	    			if (mines[i][j] == 2) {
+	    				if ((Math.abs(i-shipR) <= 2) && (Math.abs(j-shipC) <= 2)) hits++;
+	    			}
+	    		}
+
+	    	}    		
+    	}
+    	return hits;
+    }
+
     private boolean shipHit() {
 	//EFFECTS: The computer randomly generates a mine and place it on the board.
 	//EFFECTS: Returns true or false indicating whether the ship was hit by a mine this turn.
@@ -151,7 +186,7 @@ to handle how the game will react to said mouse action.
 		int y = (int) Math.floor(1.0 + Math.random() * HEIGHT);
 
     	if (handleMine(x,y)) {
-    		turnDisplay("Ship's been hit!");
+    		turnDisplay("Ship's been hit by a k-mine!");
     		return true;
     	}
 
@@ -207,6 +242,7 @@ to handle how the game will react to said mouse action.
 				} else {
 					grid[x][y].setText(sprite.getLMine());
 					mines[x-1][y-1] = 2;
+					numLMines++;
 				}
     			return false;
     		}
