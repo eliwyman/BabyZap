@@ -182,12 +182,12 @@ to handle how the game will react to said mouse action.
 
     	if (!(x == newR && y == newC)) {
 			if(!(starGates(x,y)) && !(x == WIDTH && y == HEIGHT)) {
-				if (mines[x][y] == 0) {
+				if (mines[x-1][y-1] == 0) {
 					grid[x][y].setText(sprite.getKMine());
-					mines[x][y] = 1;
+					mines[x-1][y-1] = 1;
 				} else {
 					grid[x][y].setText(sprite.getLMine());
-					mines[x][y] = 2;
+					mines[x-1][y-1] = 2;
 				}
     			return false;
     		}
