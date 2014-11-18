@@ -9,6 +9,10 @@ to handle how the game will react to said mouse action.
 	private final int HEIGHT;
 	private final int WIDTH;
 
+
+	private final int TURN_LIMIT = 99;
+	private enum END_GAME { WIN, MINE_KILL, L_MINE_KILL, L_MINE_LAND, TURN_LIMIT, FUEL_USED}
+
 	private Sprite sprite;
 	private Cell[][] grid;
 	private JTextArea field;
@@ -20,7 +24,6 @@ to handle how the game will react to said mouse action.
 	private int newR, newC;
 	//user turns
 	private int turns = 0;
-	private final int TURN_LIMIT = 99;
 	//mine location array
 	private int[][] mines;
 	//turn display
@@ -89,12 +92,25 @@ to handle how the game will react to said mouse action.
 			printTurn();
 		//User ran out of turns
 		} else if (turns > TURN_LIMIT) {
-			turnDisplay("You have run out of time!");
+			turnDisplay("You have run out of turns!");
 			printTurn();
 			endGame(false);
-		//Ship got hit by a mine
-		} else if (shipHit()) {
-			//Ship ran out of energy
+		//Ship dodged the mines
+		} else {
+			moveShip(dist);
+			turns++;
+			turnDisplay("Current Energy:"+sprite.getEnergy());
+			printTurn();
+		}
+    	
+    	AIMove();
+    }
+
+    private void AIMove() {
+
+    	//We have hit the ship!
+		if (shipHit()) {
+			//We have destroyed the ship!
 			if (sprite.shipHit()) {
 				turnDisplay("Current Energy:"+sprite.getEnergy());
 				turnDisplay("MAYDAY, MAYDAY, We're going down!");
@@ -103,20 +119,15 @@ to handle how the game will react to said mouse action.
 				return;
 			//Ship survived the turn
 			} else {
-				//Reroute the ship to the origin
+				//Put the ship back in it's place! (the origin)
 				newR = newC = ORIGIN;
 				moveShip(0);
 				turns++;
 				turnDisplay("Current Energy:"+sprite.getEnergy());
 				printTurn();
 			}
-		//Ship dodged the mines
-		} else {
-			moveShip(dist);
-			turns++;
-			turnDisplay("Current Energy:"+sprite.getEnergy());
-			printTurn();
 		}
+
     }
 
     public double distance(int row, int col) {
@@ -162,6 +173,9 @@ to handle how the game will react to said mouse action.
 		} else if (newR == HEIGHT && newC == WIDTH){
 			sprite.useFuel(dist);
 			endGame(true);
+		} else if (LMinePresent(newR, newC)){
+			sprite.useFuel(dist);
+			endGame(false);
 		} else {
 			grid[shipR][shipC].setText("");
     		shipR = newR;
@@ -171,6 +185,11 @@ to handle how the game will react to said mouse action.
 			sprite.useFuel(dist);
 			if (sprite.shipDead()) endGame(false);
 		}
+    }
+
+    private Boolean LMinePresent(int x, int y) {
+
+    	return(mines[x-1][y-1] == 2);
     }
 
     public Boolean handleMine(int x, int y) {
@@ -203,7 +222,7 @@ to handle how the game will react to said mouse action.
     	return ((x == WIDTH-1 && y == HEIGHT) || (x == WIDTH && y == HEIGHT-1) || (x == WIDTH-1 && y == HEIGHT-1));
     }
 
-    private void endGame(boolean won){
+    private void endGame(Boolean won){
     //REQUIRES: boolean variable indicating if the user won the game.
     //MODIFIES: All board-cells become disabled.
     //EFFECTS: The game ends with a display message based on whether or not the user won the game.
