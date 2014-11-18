@@ -10,11 +10,11 @@ Each class instance contains one ship instance.
 	private final String L_MINE = "#";
 	private final String GATE = "><";
 	private final String PORT = "0";
-	private final double KDMGMOD = 0.3;
-	private final double LDMGMOD = 0.3;
-	private final double HEALTHMOD = 0.1;
+	private final double KDMGMOD = 0.35;
+	private final double LDMGMOD = 0.2;
+	private final double HEALTHMOD = 0.09;
 	private final long MIN_ENERGY = 20;
-	private final double FUEL_COST = 100;
+	private final double FUEL_COST = 105;
 
 	private long energy = 100;
 
@@ -58,7 +58,7 @@ Each class instance contains one ship instance.
 	//REQUIRES: int dist, indicating distance between travel co-ordinates
 	//MODIFIES: decrements the fuel cost from the ship's energy level
 
-		energy -= dist*FUEL_COST;
+		//energy -= dist*FUEL_COST;
 	}
 
 
