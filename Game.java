@@ -4,8 +4,8 @@ public class Game extends javax.swing.JPanel
 /* EFFECTS: Draws a grid of buttons that can be used to implement a grid game.
 */
 {
-	public static final int HEIGHT=9;	// default height and width of the play area
-	public static final int WIDTH=9;
+	public static final int HEIGHT=11;	// default height and width of the play area
+	public static final int WIDTH=15;
 	private final Logic controller;
 	private int height;
 	private int width;
