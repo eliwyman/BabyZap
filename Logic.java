@@ -253,6 +253,7 @@ to handle how the game will react to said mouse action.
 		} else if (LMinePresent(newR, newC)){
 			sprite.useFuel(dist);
 			turnDisplay("We've run into an L_MINE, going down!");
+			printTurn();
 			endGame(false);
 		} else {
 			grid[shipR][shipC].setText("");
