@@ -1,8 +1,16 @@
+//Program
+//Author: Jim Uhl
+
+//swing
 import javax.swing.JTextArea;
 import javax.swing.JLabel;
+import javax.swing.JButton;
+
+//awt
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+
 
 public class BabyQ extends javax.swing.JFrame
 /* OVERVIEW: Implements a Container that contains a window to contain the BabyQ game and a window to contain output for the game.*/
@@ -36,10 +44,8 @@ public class BabyQ extends javax.swing.JFrame
         field.setEnabled(false);
         field.setText("BabyQ Game, Click a cell!");
 		field.setPreferredSize(new Dimension(PREFERRED_WIDTH, PREFERRED_HEIGHT));        
-        pane.add(field, BorderLayout.PAGE_START);
-        pane.add(new Game(field), BorderLayout.CENTER);
-        //add(new Game());
-
+        pane.add(field, BorderLayout.PAGE_END);
+        pane.add(new Game(field, pane), BorderLayout.CENTER);
     	
 		setSize(SIZE, SIZE);
         setLocationRelativeTo(null);

@@ -1,4 +1,12 @@
+//Program
+//Author: Jim Uhl
+
+//awt
+import java.awt.Container;
+
+//swing
 import javax.swing.JTextArea;
+import java.awt.BorderLayout;
 
 public class Game extends javax.swing.JPanel
 /* EFFECTS: Draws a grid of buttons that can be used to implement a grid game.
@@ -9,10 +17,11 @@ public class Game extends javax.swing.JPanel
 	private final Logic controller;
 	private int height;
 	private int width;
+	private final Restart restart;
 	
 	Cell[][] grid;
 	
-	Game(JTextArea field) {
+	Game(JTextArea field, Container container) {
 	//EFFECTS: Initializes a HEIGHTxWIDTH board with an index,
 	//The '+1' in each dimension used for the index.
 
@@ -43,6 +52,13 @@ public class Game extends javax.swing.JPanel
 			grid[0][i].setText("" + i);
 			grid[0][i].setEnabled(false);
 		}
+
+		//Add restart button to JTextArea
+		restart = new Restart(controller);
+		restart.setText("Restart");
+		restart.setEnabled(true);
+		container.add(restart, BorderLayout.PAGE_START);
+
 		//Initialize the logic's board set-up
 		controller.initBoard(grid, field);
 	}

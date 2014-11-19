@@ -54,6 +54,10 @@ to handle how the game will react to said mouse action.
 
 	}
 
+	public void restart(){
+		
+	}
+
 	public void initBoard(Cell[][] g, JTextArea f) {
 	//REQUIRES: An instance of the grid
 	//REQUIRES: The JTextArea for the game, used for printing to the user.
@@ -101,6 +105,7 @@ to handle how the game will react to said mouse action.
 		} else {
 			moveShip(dist);
 			turns++;
+			turnDisplay("Current turn: " +turns);
 			turnDisplay("Current Energy:"+sprite.getEnergy());
 			printTurn();
 		}

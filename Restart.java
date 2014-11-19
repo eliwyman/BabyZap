@@ -1,18 +1,13 @@
-//Program
-//Author: Jim Uhl
-
-public class Cell extends javax.swing.JButton implements java.awt.event.ActionListener
+public class Restart extends javax.swing.JButton implements java.awt.event.ActionListener
 /* OVERVIEW: Implements a button that knows its location in a grid of
      buttons.  When the button is clicked, it calls userMove on the
      instance of BabyGame passed in on creation and passes its row and
      column.
 */
 {
-    private final int row;
-    private final int col;
     private final Logic logic;
 
-    Cell(int row, int col, Logic logic) {
+    Restart(Logic logic) {
     //REQUIRES: An int r, indicating row index in the grid.
     //REQUIRES: An int c, indicating column index in the grid.
     //REQUIRES: An instance of the Logic class.
@@ -20,20 +15,13 @@ public class Cell extends javax.swing.JButton implements java.awt.event.ActionLi
     //Connects it to the logic class to handle user interaction.
 
 	   super();
-	   this.row = row;
-	   this.col = col;
 	   this.logic = logic;
 	   addActionListener(this);
     }
-    public int getRow() {
-	   return row;
-    }
-    public int getCol() {
-	   return col;
-    }
+
     public void actionPerformed(java.awt.event.ActionEvent e) { 
     //REQUIRES: ActionEvent 
     //EFFECTS: Calls the logic class with parameters self.row and self.col
-	   logic.userMove(row, col);
+	   logic.restart();
     } 
 }
