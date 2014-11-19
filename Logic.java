@@ -46,7 +46,7 @@ to handle how the game will react to said mouse action.
 	private Timer timer;
 	private Timer timer2;
 	private final int REFRESH = 30000; //30 seconds
-	private final int SPEED = 500;
+	private final int SPEED = 2000;
 	private final int PAUSE = 0;
 	private Boolean toggle;
 	//animation variables
@@ -66,14 +66,14 @@ to handle how the game will react to said mouse action.
     	{"+", "-", "~", "-","~","-","~","-","~","-","~","-","~","-","+"}};
 
     private static final String[][] ALIEN =  {
-    	{"+", " ", " ", " "," ","-","-","-","-","-"," "," "," "," ","+"},
-    	{"+", " ", " ", " ","d"," "," "," "," "," ","b"," "," "," ","+"},
-    	{"+", " ", " ", "|"," "," "," "," "," "," "," ","|"," "," ","+"},
-    	{"+", " ", " ", " ","\\"," "," "," "," "," ","/"," "," "," ","+"},
-    	{"+", " ", " ", " "," ","\\"," "," "," ","/"," "," "," "," ","+"},
-    	{"+", " ", " ", " "," "," ","|"," ","|"," "," "," "," "," ","+"},
-    	{"+", " ", " ", " "," "," ","|"," ","|"," "," "," "," "," ","+"},
-    	{"+", "-", "~", "-","~","-","|","V","|","-","~","-","~","-","+"}};
+    	{" ", " ", " ", " "," ","/","-","X","-","\\"," "," "," "," "," "},
+    	{" ", " ", " ", " ","d"," "," "," "," "," ","b"," "," "," "," "},
+    	{" ", " ", " ", "|"," "," "," "," "," "," "," ","|"," "," "," "},
+    	{" ", " ", " ", " ","\\"," "," "," "," "," ","/"," "," "," "," "},
+    	{" ", " ", " ", " "," ","\\"," "," "," ","/"," "," "," "," "," "},
+    	{" ", " ", " ", " "," "," ","|"," ","|"," "," "," "," "," "," "},
+    	{" ", " ", " ", " "," "," ","|"," ","|"," "," "," "," "," "," "},
+    	{" ", " ", " ", " "," "," ","|","V","|"," "," "," "," "," "," "}};
 
 	Logic(int h, int w){
 	//REQUIRES: int h, indicating board height (less the row used for index).
@@ -365,7 +365,7 @@ to handle how the game will react to said mouse action.
 		}
 
 		if(won){
-			Timer timer = new Timer(SPEED/2, new ActionListener() {
+			timer = new Timer(SPEED/2, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					shipAnimate();    
@@ -389,7 +389,7 @@ to handle how the game will react to said mouse action.
 
 			drawAlien();
 
-			Timer timer = new Timer(SPEED, new ActionListener() {
+			timer = new Timer(SPEED, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					openAlien();	    
@@ -438,27 +438,27 @@ to handle how the game will react to said mouse action.
 	}
 
 	private void drawAlien() {
-		for (int i = 1; i < HEIGHT-2; i++) {
-			for (int j = 0; j < WIDTH; j++) {
-				grid[i][j].setText(ALIEN[HEIGHT-2-i][j]);
+		for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
+			for (int j = 1; j < WIDTH; j++) {
+				grid[i+1][j].setText(ALIEN[ANIMATION_HEIGHT-i][j]);
 			}
 		}
 	}
 
     private void openAlien() {
 
-    	grid[1][8].setText("V");
-    	grid[3][8].setText(" ");
-    	grid[7][7].setText(" ");
-    	grid[7][9].setText(" ");
+    	grid[2][7].setText("V");
+    	grid[4][7].setText(" ");
+    	grid[7][6].setText(" ");
+    	grid[7][8].setText(" ");
     }
 
     private void closeAlien() {
 
-    	grid[1][8].setText("_");
-    	grid[3][8].setText("0");
-    	grid[7][7].setText("*");
-    	grid[7][9].setText("*");
+    	grid[2][7].setText("_");
+    	grid[4][7].setText("0");
+    	grid[7][6].setText("*");
+    	grid[7][8].setText("*");
     }
 
     private void turnDisplay(String s) {

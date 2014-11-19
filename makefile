@@ -1,6 +1,6 @@
 BabyZap: BabyZap.java
 	javac BabyZap.java
-run: BabyZap.class
+run: BabyZap
 	java BabyZap
 test: LogicDriver.class SpriteDriver.class
 	java LogicDriver
