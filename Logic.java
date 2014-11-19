@@ -197,13 +197,12 @@ to handle how the game will react to said mouse action.
 	    	for (int i = 0; i < HEIGHT; i++) {
 	    		for (int j = 0; j < WIDTH; j++) {
 	    			if (mines[i][j] == 2) {
-System.out.println("LMine found at: "+(i-1)+","+(j-1));
-	    				if (((Math.abs((i-1)-shipR) == 2) && ((j-1) == shipC)) || ((Math.abs((j-1)-shipC) == 2) && ((i-1) == shipR))) {
+
+	    				if (((Math.abs((i+1)-shipR) == 2) && ((j+1) == shipC)) || ((Math.abs((j+1)-shipC) == 2) && ((i+1) == shipR))) {
 	    					if (LMineHit(i,j,SEVERITY_TWO)) return true;
-System.out.println("Ship two away found at: "+(i-1)+","+(j-1)+" Ship r,c: "+shipR+","+shipC);
-	    				} else if (((Math.abs((i-1)-shipR) == 1) && ((j-1) == shipC)) || ((Math.abs((j-1)-shipC) == 1) && ((i-1) == shipR))) {
+
+	    				} else if (((Math.abs((i+1)-shipR) == 1) && ((j+1) == shipC)) || ((Math.abs((j+1)-shipC) == 1) && ((i+1) == shipR))) {
 							if (LMineHit(i,j,SEVERITY_ONE)) return true;
-System.out.println("Ship one away found at: "+(i-1)+","+(j-1)+" Ship r,c: "+shipR+","+shipC);
 	    				}
 	    			}
 	    		}
@@ -217,7 +216,7 @@ System.out.println("Ship one away found at: "+(i-1)+","+(j-1)+" Ship r,c: "+ship
 		turnDisplay("Ship's been hit by an l-mine!");
 		mines[i][j]--;
 		numLMines--;
-		grid[i][j].setText(sprite.getKMine());
+		grid[i+1][j+1].setText(sprite.getKMine());
 		return sprite.shipLMineHit(sev);
     }
 
@@ -260,7 +259,7 @@ System.out.println("Ship one away found at: "+(i-1)+","+(j-1)+" Ship r,c: "+ship
     		shipR = newR;
 			shipC = newC;
 			grid[shipR][shipC].setText(sprite.getShip());
-			mines[shipR][shipC] = 0;
+			mines[shipR-1][shipC-1] = 0;
 			sprite.useFuel(dist);
 			if (sprite.shipDead()) endGame(false);
 		}
