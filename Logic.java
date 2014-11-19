@@ -1,4 +1,10 @@
+//awt
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+//swing
 import javax.swing.JTextArea;
+import javax.swing.Timer;
 
 public class Logic
 /*OVERVIEW: This class handles all game logic,
@@ -33,7 +39,17 @@ to handle how the game will react to said mouse action.
 	private String display;
 	//game variable
 	private Boolean GAME_OVER;
-
+	//timer variables
+	private Timer timer;
+	private Timer timer2;
+	private final int REFRESH = 30000; //30 seconds
+	private final int SPEED = 500;
+	private final int PAUSE = 0;
+	private Boolean toggle;
+	//animation variables
+	private int celebrationIndex = 0;
+	private int celebLength = 10;
+	private static String celebMessage[] = new String[]{" ","Y","O","U"," ","W","O","N","!"," "};
 
 	Logic(int h, int w){
 	//REQUIRES: int h, indicating board height (less the row used for index).
@@ -51,6 +67,7 @@ to handle how the game will react to said mouse action.
 		numLMines = 0;
 		initMines();
 		GAME_OVER = false;
+		toggle = true;
 
 	}
 
@@ -63,6 +80,8 @@ to handle how the game will react to said mouse action.
 	}
 
 	public void restart(){
+		timer.stop();
+		timer2.stop();
 		sprite = new Sprite();
 		mines = new int[HEIGHT][WIDTH];
 		initMines();
@@ -317,21 +336,80 @@ to handle how the game will react to said mouse action.
 			}
 		}
 
-		//print "YOU on the cells
-		grid[6][4].setText("Y");
-		grid[6][5].setText("O");
-		grid[6][6].setText("U");
-
 		if(won){
-			grid[4][4].setText("W");
-			grid[4][5].setText("O");
-			grid[4][6].setText("N");
+			Timer timer = new Timer(SPEED/2, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					shipCelebration();    
+       			}
+			});
+			timer.setRepeats(true);
+			timer.setInitialDelay(SPEED);
+			timer2 = new Timer(REFRESH, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				  	celebrationIndex = 0;
+				  	shipR = 1;
+				  	shipC = 1;
+				}
+			});
+			timer2.setRepeats(true);
+			timer2.setInitialDelay(PAUSE);
+
+			timer.start();
+			timer2.start();
+
 		} else {
-			grid[4][3].setText("L");
-			grid[4][4].setText("O");
-			grid[4][5].setText("S");
-			grid[4][6].setText("T");
-			grid[4][7].setText("!");
+			Timer timer = new Timer(SPEED, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					openAlien();	    
+       			}
+			});
+			timer.setRepeats(true);
+			timer2 = new Timer(SPEED, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				  	closeAlien();
+				}
+			});
+			timer2.setRepeats(true);
+			timer2.setInitialDelay(SPEED/2);
+
+			timer.start();
+			timer2.start();
+    	}
+    }
+
+    public void shipCelebration() {
+    	int i = celebrationIndex % celebLength;
+    	int r = HEIGHT-1 % shipR;
+    	int c = WIDTH % shipC;
+    	
+    	grid[r][c].setText(celebMessage[i]);
+    	grid[r+1][c].setText(sprite.getShip());
+
+    	celebrationIndex++;
+    	shipR++;
+    	if (r == 1) shipC++;
+    }
+
+    private void openAlien() {
+
+    	for (int i = 1; i < HEIGHT; i++) {
+    		for (int j = 1; j < WIDTH; j++ ) {
+    			grid [i][j].setText("X");
+    		}
+    	}
+    }
+
+    private void closeAlien() {
+
+
+    	for (int i = HEIGHT/2; i < HEIGHT; i++) {
+    		for (int j = WIDTH/2; j < WIDTH; j++ ) {
+    			grid [i][j].setText("0");
+    		}
     	}
     }
 
