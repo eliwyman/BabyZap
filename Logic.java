@@ -122,7 +122,6 @@ to handle how the game will react to said mouse action.
 		if (!sprite.enoughFuel(dist) || starGates(newC,newR)) {
 			turnDisplay("Invalid Move"); 
 			turnDisplay("Current Energy:"+sprite.getEnergy());
-			printTurn();
 		//User ran out of turns
 		} else if (turns > TURN_LIMIT) {
 			turnDisplay("You have run out of turns!");
@@ -135,7 +134,6 @@ to handle how the game will react to said mouse action.
 			turnDisplay("Ship moved to "+shipR+","+shipC);
 			turnDisplay("Current turn: " +turns);
 			turnDisplay("Current Energy:"+sprite.getEnergy());
-			printTurn();
 		}
     	
     	if (!GAME_OVER) AIMove();
@@ -169,6 +167,8 @@ to handle how the game will react to said mouse action.
 				turnDisplay("Current Energy:"+sprite.getEnergy());
 				printTurn();
 			}
+		} else {
+			printTurn();
 		}
 
     }
