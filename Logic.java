@@ -65,6 +65,16 @@ to handle how the game will react to said mouse action.
     	{"+", " ", " ", " "," "," "," "," "," "," "," "," "," "," ","+"},
     	{"+", "-", "~", "-","~","-","~","-","~","-","~","-","~","-","+"}};
 
+    private static final String[][] ALIEN =  {
+    	{"+", " ", " ", " "," ","-","-","-","-","-"," "," "," "," ","+"},
+    	{"+", " ", " ", " ","d"," "," "," "," "," ","b"," "," "," ","+"},
+    	{"+", " ", " ", "|"," "," "," "," "," "," "," ","|"," "," ","+"},
+    	{"+", " ", " ", " ","\\"," "," "," "," "," ","/"," "," "," ","+"},
+    	{"+", " ", " ", " "," ","\\"," "," "," ","/"," "," "," "," ","+"},
+    	{"+", " ", " ", " "," "," ","|"," ","|"," "," "," "," "," ","+"},
+    	{"+", " ", " ", " "," "," ","|"," ","|"," "," "," "," "," ","+"},
+    	{"+", "-", "~", "-","~","-","|","V","|","-","~","-","~","-","+"}};
+
 	Logic(int h, int w){
 	//REQUIRES: int h, indicating board height (less the row used for index).
 	//REQURES: int w, indicating board width (less the column used for index).
@@ -95,8 +105,10 @@ to handle how the game will react to said mouse action.
 	}
 
 	public void restart(){
-		timer.stop();
-		timer2.stop();
+		if (GAME_OVER) {
+			timer.stop();
+			timer2.stop();
+		}
 		sprite = new Sprite();
 		mines = new int[HEIGHT][WIDTH];
 		initMines();
@@ -374,6 +386,9 @@ to handle how the game will react to said mouse action.
 			timer2.start();
 
 		} else {
+
+			drawAlien();
+
 			Timer timer = new Timer(SPEED, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -396,13 +411,13 @@ to handle how the game will react to said mouse action.
     }
 
     public void shipAnimate() {
-
+/*
 	//let's say I is width, j is height 
    	//have an array representing the flag
 	//animateI= 0;
 	//animateJ = 0;
 		for (int j = 0; j <= WIDTH; j++) {
-	        if (WIDTH % j == animateJ) {
+	        if (WIDTH / j == animateJ) {
 	        	//reset the unused text
 	        	for (int i = 0; i < animateI; i++) grid[i][j].setText("");
 	        	for (int i = HEIGHT-animateI; i < HEIGHT; i++) grid[i][j].setText("");
@@ -419,25 +434,31 @@ to handle how the game will react to said mouse action.
 	   animateJ++;
 	   if (animateJ == 5) animateJ = 0;
 	   if (animateI == 3) animateI =  0;
+*/
+	}
+
+	private void drawAlien() {
+		for (int i = 1; i < HEIGHT-2; i++) {
+			for (int j = 0; j < WIDTH; j++) {
+				grid[i][j].setText(ALIEN[HEIGHT-2-i][j]);
+			}
+		}
 	}
 
     private void openAlien() {
 
-    	for (int i = 1; i < HEIGHT; i++) {
-    		for (int j = 1; j < WIDTH; j++ ) {
-    			grid [i][j].setText("X");
-    		}
-    	}
+    	grid[1][8].setText("V");
+    	grid[3][8].setText(" ");
+    	grid[7][7].setText(" ");
+    	grid[7][9].setText(" ");
     }
 
     private void closeAlien() {
 
-
-    	for (int i = HEIGHT/2; i < HEIGHT; i++) {
-    		for (int j = WIDTH/2; j < WIDTH; j++ ) {
-    			grid [i][j].setText("0");
-    		}
-    	}
+    	grid[1][8].setText("_");
+    	grid[3][8].setText("0");
+    	grid[7][7].setText("*");
+    	grid[7][9].setText("*");
     }
 
     private void turnDisplay(String s) {
