@@ -80,7 +80,7 @@ to handle how the game will react to said mouse action.
 
 		initBoard(grid, field);
 		turnDisplay("Game Restarted");
-		turnDisplay("BabyQ Game, Click a cell!");
+		turnDisplay("BabyZap Game, Click a cell!");
 		printTurn();
 		GAME_OVER = false;
 	}

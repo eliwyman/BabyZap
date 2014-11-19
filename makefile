@@ -1,7 +1,7 @@
-BabyQ: BabyQ.java
-	javac BabyQ.java
-run: BabyQ.class
-	java BabyQ
+BabyZap: BabyZap.java
+	javac BabyZap.java
+run: BabyZap.class
+	java BabyZap
 test: LogicDriver.class SpriteDriver.class
 	java LogicDriver
 	java SpriteDriver
