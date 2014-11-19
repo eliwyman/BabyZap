@@ -74,6 +74,7 @@ to handle how the game will react to said mouse action.
 		for (int i = 1; i <= HEIGHT; i++) {
 			for (int j = 1; j <= HEIGHT; j++) {
 				grid[i][j].setText("");
+				grid[i][j].setEnabled(true);
 			}
 		}
 
@@ -137,7 +138,7 @@ to handle how the game will react to said mouse action.
 			printTurn();
 		}
     	
-    	if !(GAME_OVER) AIMove();
+    	if (!GAME_OVER) AIMove();
     }
 
     private void AIMove() {
@@ -196,13 +197,13 @@ to handle how the game will react to said mouse action.
 	    	for (int i = 0; i < HEIGHT; i++) {
 	    		for (int j = 0; j < WIDTH; j++) {
 	    			if (mines[i][j] == 2) {
-	    				
-	    				if (((Math.abs(i-shipR) == 2) && (j == shipC)) || ((Math.abs(j-shipC) == 2) && (i == shipR))) {
+System.out.println("LMine found at: "+(i-1)+","+(j-1));
+	    				if (((Math.abs((i-1)-shipR) == 2) && ((j-1) == shipC)) || ((Math.abs((j-1)-shipC) == 2) && ((i-1) == shipR))) {
 	    					if (LMineHit(i,j,SEVERITY_TWO)) return true;
-
-	    				} else if (((Math.abs(i-shipR) == 1) && (j == shipC)) || ((Math.abs(j-shipC) == 1) && (i == shipR))) {
+System.out.println("Ship two away found at: "+(i-1)+","+(j-1)+" Ship r,c: "+shipR+","+shipC);
+	    				} else if (((Math.abs((i-1)-shipR) == 1) && ((j-1) == shipC)) || ((Math.abs((j-1)-shipC) == 1) && ((i-1) == shipR))) {
 							if (LMineHit(i,j,SEVERITY_ONE)) return true;
-
+System.out.println("Ship one away found at: "+(i-1)+","+(j-1)+" Ship r,c: "+shipR+","+shipC);
 	    				}
 	    			}
 	    		}
@@ -216,6 +217,7 @@ to handle how the game will react to said mouse action.
 		turnDisplay("Ship's been hit by an l-mine!");
 		mines[i][j]--;
 		numLMines--;
+		grid[i][j].setText(sprite.getKMine());
 		return sprite.shipLMineHit(sev);
     }
 
@@ -251,6 +253,7 @@ to handle how the game will react to said mouse action.
 			endGame(true);
 		} else if (LMinePresent(newR, newC)){
 			sprite.useFuel(dist);
+			turnDisplay("We've run into an L_MINE, going down!");
 			endGame(false);
 		} else {
 			grid[shipR][shipC].setText("");
@@ -311,8 +314,6 @@ to handle how the game will react to said mouse action.
 			for (int j = 1; j <= WIDTH; j++) {
 			    grid[i][j].setText("");
 			    grid[i][j].setEnabled(false);
-			    grid[j][j].setText("");
-			    grid[i][j].setEnabled(false);
 			}
 		}
 
@@ -322,14 +323,10 @@ to handle how the game will react to said mouse action.
 		grid[6][6].setText("U");
 
 		if(won){
-			turnDisplay("You Won!");
-			printTurn();
 			grid[4][4].setText("W");
 			grid[4][5].setText("O");
 			grid[4][6].setText("N");
 		} else {
-			turnDisplay("The aliens have defeated you!");
-			printTurn();
 			grid[4][3].setText("L");
 			grid[4][4].setText("O");
 			grid[4][5].setText("S");
