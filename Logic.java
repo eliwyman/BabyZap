@@ -118,7 +118,7 @@ to handle how the game will react to said mouse action.
 		display = "";
 
 		for (int i = 1; i <= HEIGHT; i++) {
-			for (int j = 1; j <= HEIGHT; j++) {
+			for (int j = 1; j <= WIDTH; j++) {
 				grid[i][j].setText("");
 				grid[i][j].setEnabled(true);
 			}
