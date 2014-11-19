@@ -24,11 +24,15 @@ to handle how the game will react to said mouse action.
 	private int newR, newC;
 	//user turns
 	private int turns = 0;
-	//mine location array
+	//mine variables
 	private int[][] mines;
 	private int numLMines;
+	private final int SEVERITY_ONE = 1;
+	private final int SEVERITY_TWO = 2;
 	//turn display
 	private String display;
+	//game variable
+	private Boolean GAME_OVER;
 
 
 	Logic(int h, int w){
@@ -46,6 +50,7 @@ to handle how the game will react to said mouse action.
 		mines = new int[HEIGHT][WIDTH];
 		numLMines = 0;
 		initMines();
+		GAME_OVER = false;
 
 	}
 
@@ -76,16 +81,17 @@ to handle how the game will react to said mouse action.
 		turnDisplay("Game Restarted");
 		turnDisplay("BabyQ Game, Click a cell!");
 		printTurn();
+		GAME_OVER = false;
 	}
 
-	public void initBoard(Cell[][] g, JTextArea f) {
+	public void initBoard(Cell[][] gameBoard, JTextArea field) {
 	//REQUIRES: An instance of the grid
 	//REQUIRES: The JTextArea for the game, used for printing to the user.
 	//MODIFIES: set's the grid and field instance variables.
 	//EFFECTS: Displays the initial board graphics.
 
-		grid = g;
-		field = f;
+		grid = gameBoard;
+		this.field = field;
 		//Launch the shuttle
 		grid[1][1].setText(sprite.getShip());
 		shipR = shipC = 1;
@@ -131,17 +137,13 @@ to handle how the game will react to said mouse action.
 			printTurn();
 		}
     	
-    	AIMove();
+    	if !(GAME_OVER) AIMove();
     }
 
     private void AIMove() {
 
     	//Fire the l-Mine weapons
-    	int numHits = fireLMine();
-
-    	if (numHits > 0) turnDisplay("Ship's been hit by an l-mine!");
-
-    	if (sprite.shipLMineHit(numHits)) {
+    	if (fireLMine()) {
 			turnDisplay("Current Energy:"+sprite.getEnergy());
 			turnDisplay("MAYDAY, MAYDAY, We're going down!");
 			printTurn();
@@ -184,25 +186,37 @@ to handle how the game will react to said mouse action.
     	return (Math.hypot(Math.abs(x1 - x2), Math.abs(y1 - y2)));
     }
 
-    private int fireLMine() {
+    private Boolean fireLMine() {
     	
-    	int hits = 0;
-    	//keep variable of numLMines
     	//return false if num == 0
     	if (numLMines == 0) {
-    		return 0;
+    		return false;
     	} else {
 	    	//look at each LMine if x & y are within 2 spots, ship got hit, but continue!
 	    	for (int i = 0; i < HEIGHT; i++) {
 	    		for (int j = 0; j < WIDTH; j++) {
 	    			if (mines[i][j] == 2) {
-	    				if ((Math.abs(i-shipR) <= 2) && (Math.abs(j-shipC) <= 2)) hits++;
+	    				
+	    				if (((Math.abs(i-shipR) == 2) && (j == shipC)) || ((Math.abs(j-shipC) == 2) && (i == shipR))) {
+	    					if (LMineHit(i,j,SEVERITY_TWO)) return true;
+
+	    				} else if (((Math.abs(i-shipR) == 1) && (j == shipC)) || ((Math.abs(j-shipC) == 1) && (i == shipR))) {
+							if (LMineHit(i,j,SEVERITY_ONE)) return true;
+
+	    				}
 	    			}
 	    		}
 
 	    	}    		
     	}
-    	return hits;
+    	return sprite.shipDead();
+    }
+
+    private Boolean LMineHit(int i, int j, int sev) {
+		turnDisplay("Ship's been hit by an l-mine!");
+		mines[i][j]--;
+		numLMines--;
+		return sprite.shipLMineHit(sev);
     }
 
     private boolean shipHit() {
@@ -233,6 +247,7 @@ to handle how the game will react to said mouse action.
 			sprite.shipHeal();
 		} else if (newR == HEIGHT && newC == WIDTH){
 			sprite.useFuel(dist);
+			turnDisplay("You Won!\n");
 			endGame(true);
 		} else if (LMinePresent(newR, newC)){
 			sprite.useFuel(dist);
@@ -289,9 +304,11 @@ to handle how the game will react to said mouse action.
     //MODIFIES: All board-cells become disabled.
     //EFFECTS: The game ends with a display message based on whether or not the user won the game.
 
+    	GAME_OVER = true;
+
     	//declare all cells false
 		for (int i = 1; i <= HEIGHT; i++) {
-			for (int j = 1; j <= HEIGHT; j++) {
+			for (int j = 1; j <= WIDTH; j++) {
 			    grid[i][j].setText("");
 			    grid[i][j].setEnabled(false);
 			    grid[j][j].setText("");
@@ -305,10 +322,14 @@ to handle how the game will react to said mouse action.
 		grid[6][6].setText("U");
 
 		if(won){
+			turnDisplay("You Won!");
+			printTurn();
 			grid[4][4].setText("W");
 			grid[4][5].setText("O");
 			grid[4][6].setText("N");
 		} else {
+			turnDisplay("The aliens have defeated you!");
+			printTurn();
 			grid[4][3].setText("L");
 			grid[4][4].setText("O");
 			grid[4][5].setText("S");

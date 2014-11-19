@@ -76,10 +76,10 @@ Each class instance contains one ship instance.
 	}
 
 
-	public boolean shipLMineHit(int hits) {	 		
+	public boolean shipLMineHit(int sev) {	 		
 	//MODIFIES: decrements the damage taken from the ship's energy
 	//EFFECTS: returns true or false if the ship has died (energy drops below 20 units).
-		for (int i = 0; i < hits; i++) energy -= energy * LDMGMOD;
+		energy -= energy * (LDMGMOD / sev);
 		return(shipDead());
 	}
 
