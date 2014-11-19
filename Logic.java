@@ -35,6 +35,9 @@ to handle how the game will react to said mouse action.
 	private int numLMines;
 	private final int SEVERITY_ONE = 1;
 	private final int SEVERITY_TWO = 2;
+	private final int NO_MINE = 0;
+	private final int K_MINE = 1;
+	private final int L_MINE = 2;
 	//turn display
 	private String display;
 	//game variable
@@ -47,9 +50,20 @@ to handle how the game will react to said mouse action.
 	private final int PAUSE = 0;
 	private Boolean toggle;
 	//animation variables
-	private int celebrationIndex = 0;
-	private int celebLength = 10;
-	private static String celebMessage[] = new String[]{" ","Y","O","U"," ","W","O","N","!"," "};
+	private final int ANIMATEMODW = 5;
+	private final int ANIMATEMODH = 3;
+	private int animateI;
+    private int animateJ;
+    private static final int ANIMATION_HEIGHT = 8;
+    private static final String[][] FLAG =  {
+    	{"+", "-", "~", "-","~","-","~","-","~","-","~","-","~","-","+"},
+    	{"+", " ", " ", " "," "," "," "," "," "," "," "," "," "," ","+"},
+    	{"+", " ", " ", " "," "," "," "," "," "," "," "," "," "," ","+"},
+    	{"+", " ", " ", " ","V","I","C","T","O","R","Y"," "," "," ","+"},
+    	{"+", " ", " ", " "," "," "," "," "," "," "," "," "," "," ","+"},
+    	{"+", " ", " ", " "," "," "," "," "," "," "," "," "," "," ","+"},
+    	{"+", " ", " ", " "," "," "," "," "," "," "," "," "," "," ","+"},
+    	{"+", "-", "~", "-","~","-","~","-","~","-","~","-","~","-","+"}};
 
 	Logic(int h, int w){
 	//REQUIRES: int h, indicating board height (less the row used for index).
@@ -68,13 +82,14 @@ to handle how the game will react to said mouse action.
 		initMines();
 		GAME_OVER = false;
 		toggle = true;
+		animateI = animateJ = 0;
 
 	}
 
 	private void initMines() {
 		for (int i = 0; i < HEIGHT; i++) {
 			for (int j = 0; j < WIDTH; j++) {
-				mines[i][j] = 0;
+				mines[i][j] = NO_MINE;
 			}			
 		}
 	}
@@ -102,6 +117,7 @@ to handle how the game will react to said mouse action.
 		turnDisplay("BabyZap Game, Click a cell!");
 		printTurn();
 		GAME_OVER = false;
+		animateI = animateJ = 0;
 	}
 
 	public void initBoard(Cell[][] gameBoard, JTextArea field) {
@@ -215,7 +231,7 @@ to handle how the game will react to said mouse action.
 	    	//look at each LMine if x & y are within 2 spots, ship got hit, but continue!
 	    	for (int i = 0; i < HEIGHT; i++) {
 	    		for (int j = 0; j < WIDTH; j++) {
-	    			if (mines[i][j] == 2) {
+	    			if (mines[i][j] == L_MINE) {
 
 	    				if (((Math.abs((i+1)-shipR) == 2) && ((j+1) == shipC)) || ((Math.abs((j+1)-shipC) == 2) && ((i+1) == shipR))) {
 	    					if (LMineHit(i,j,SEVERITY_TWO)) return true;
@@ -233,7 +249,7 @@ to handle how the game will react to said mouse action.
 
     private Boolean LMineHit(int i, int j, int sev) {
 		turnDisplay("Ship's been hit by an l-mine!");
-		mines[i][j]--;
+		mines[i][j] = K_MINE;
 		numLMines--;
 		grid[i+1][j+1].setText(sprite.getKMine());
 		return sprite.shipLMineHit(sev);
@@ -279,7 +295,7 @@ to handle how the game will react to said mouse action.
     		shipR = newR;
 			shipC = newC;
 			grid[shipR][shipC].setText(sprite.getShip());
-			mines[shipR-1][shipC-1] = 0;
+			mines[shipR-1][shipC-1] = NO_MINE;
 			sprite.useFuel(dist);
 			if (sprite.shipDead()) endGame(false);
 		}
@@ -287,7 +303,7 @@ to handle how the game will react to said mouse action.
 
     private Boolean LMinePresent(int x, int y) {
 
-    	return(mines[x-1][y-1] == 2);
+    	return(mines[x-1][y-1] == L_MINE);
     }
 
     public Boolean handleMine(int x, int y) {
@@ -299,12 +315,12 @@ to handle how the game will react to said mouse action.
 
     	if (!(x == newR && y == newC)) {
 			if(!(starGates(x,y)) && !(x == WIDTH && y == HEIGHT)) {
-				if (mines[x-1][y-1] == 0) {
+				if (mines[x-1][y-1] == NO_MINE) {
 					grid[x][y].setText(sprite.getKMine());
-					mines[x-1][y-1] = 1;
+					mines[x-1][y-1] = K_MINE;
 				} else {
 					grid[x][y].setText(sprite.getLMine());
-					mines[x-1][y-1] = 2;
+					mines[x-1][y-1] = L_MINE;
 					numLMines++;
 				}
     			return false;
@@ -340,7 +356,7 @@ to handle how the game will react to said mouse action.
 			Timer timer = new Timer(SPEED/2, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					shipCelebration();    
+					shipAnimate();    
        			}
 			});
 			timer.setRepeats(true);
@@ -348,9 +364,7 @@ to handle how the game will react to said mouse action.
 			timer2 = new Timer(REFRESH, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-				  	celebrationIndex = 0;
-				  	shipR = 1;
-				  	shipC = 1;
+
 				}
 			});
 			timer2.setRepeats(true);
@@ -381,18 +395,31 @@ to handle how the game will react to said mouse action.
     	}
     }
 
-    public void shipCelebration() {
-    	int i = celebrationIndex % celebLength;
-    	int r = HEIGHT-1 % shipR;
-    	int c = WIDTH % shipC;
-    	
-    	grid[r][c].setText(celebMessage[i]);
-    	grid[r+1][c].setText(sprite.getShip());
+    public void shipAnimate() {
 
-    	celebrationIndex++;
-    	shipR++;
-    	if (r == 1) shipC++;
-    }
+	//let's say I is width, j is height 
+   	//have an array representing the flag
+	//animateI= 0;
+	//animateJ = 0;
+		for (int j = 0; j <= WIDTH; j++) {
+	        if (WIDTH % j == animateJ) {
+	        	//reset the unused text
+	        	for (int i = 0; i < animateI; i++) grid[i][j].setText("");
+	        	for (int i = HEIGHT-animateI; i < HEIGHT; i++) grid[i][j].setText("");
+
+	        	//redraw the flag
+	        	for (int i = 0; i < ANIMATION_HEIGHT; i++){
+	        		//Reprint the map starting at height = animateJ, for column animate I
+	       			grid[i+animateI][j].setText(FLAG[i][j]);	
+	        	}
+
+	        }
+	   }
+	   animateI++;
+	   animateJ++;
+	   if (animateJ == 5) animateJ = 0;
+	   if (animateI == 3) animateI =  0;
+	}
 
     private void openAlien() {
 
