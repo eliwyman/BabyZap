@@ -125,6 +125,7 @@ to handle how the game will react to said mouse action.
 		} else {
 			moveShip(dist);
 			turns++;
+			turnDisplay("Ship moved to "+shipR+","+shipC);
 			turnDisplay("Current turn: " +turns);
 			turnDisplay("Current Energy:"+sprite.getEnergy());
 			printTurn();
