@@ -55,7 +55,29 @@ to handle how the game will react to said mouse action.
 	}
 
 	public void restart(){
-		
+		sprite = new Sprite();
+		display = "";
+		mines = new int[HEIGHT][WIDTH];
+		numLMines = 0;
+		shipR = shipC = 1;
+		turns = 0;
+
+		for (int i = 1; i <= HEIGHT; i++) {
+			for (int j = 1; j <= HEIGHT; j++) {
+				grid[i][j].setText("");
+			}
+		}
+
+		for (int i = 0; i < HEIGHT; i++) {
+			for (int j = 0; j < WIDTH; j++) {
+				mines[i][j] = 0;
+			}			
+		}
+
+		initBoard(grid, field);
+		turnDisplay("Game Restarted");
+		turnDisplay("BabyQ Game, Click a cell!");
+		printTurn();
 	}
 
 	public void initBoard(Cell[][] g, JTextArea f) {
