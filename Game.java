@@ -45,10 +45,15 @@ public class Game extends javax.swing.JPanel
 			}
 		}
 
+		//Initialize the cell index
 		grid[0][0].setEnabled(false);
+
 		for (int i = 1; i < height; i++) {
 			grid[i][0].setText("" + i);
 			grid[i][0].setEnabled(false);
+		}
+
+		for (int i = 1; i < width; i++) {
 			grid[0][i].setText("" + i);
 			grid[0][i].setEnabled(false);
 		}
