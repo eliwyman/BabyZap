@@ -22,23 +22,23 @@ $ make test
 
 All test buckets should run without error.
 
-Baby-Q is a game in which the human play tries to navigate the ship '/\' from one corner of the galaxy to the other. At each turn the computer will lay 1-3 mines at random. The players take turns starting with the human player. The player has 100 moves to reach the star port.
+Baby-Zap is a game in which the human play tries to navigate the ship '/\' from one corner of the galaxy to the other. At each turn the computer will lay a k-mine at random, if the k-mine lands on the user it will damage the ship, if the k-mine lands on another mine, they will 'stack' and become an l-mine, the l-mine can shoot the user if within range and appropriate direction, after a shot is landed the l-mine reverts back to a k-mine. Try not to fly in to them...
+The players take turns starting with the human player. The player has 100 moves to reach the star port.
 
 Ship
 
-The ship has an energy level which starts at 100 units. The amount of energy consumed moving from sector (0,0) to (x,y) requires 100 times the distance between the two sectors.
+The ship has an energy level which starts at 115 units. The amount of energy needed when moving from sector (0,0) to (x,y) is 105 times the hypotenuse measured between the two sectors. However, the fuel is not consumed, moves are free!
 
-E.g. Moving from (2,2) to (4,4) will require 4*100 units of energy.
+E.g. Moving from (0,0) to (2,2) will require 4*100 units of energy.
 
 If the energy falls below 20 units, the ship loses the ability to power both engines and goes down, in which case you die. Be careful how you move!
 
-On a given turn the player can do one of two actions both via mouse
-click:
+On a given turn the player can do one of two actions both via mouse click:
 
-1. Stay in the current position, increasing the energy level by 10%
+1. Stay in the current position, increasing the energy level by 9%
 2. Move to another sector, with a corresponding decrease in the energy level.
 
-After the player moves, the computer lays 1-3 '+' mines. If a mine lands on the ship the mine self destructs and the ship's energy decreases by 30%, then after the rest of the mines (if any) have been placed the ship '/\' is returned to the starting position.
+After the player moves, the computer lays a '+' k-mine. If a k-mine lands on the ship the k-mine self destructs and the ship's energy decreases by 35%, if a k-mine lands on another k-mine then it is converted to an '#' l-mine. The l-mine can shoot at the ship if it is both within 2 units, and perpendicular to the mine, damage dealt equal to 20/DL %, where DL is the distance between the l-mine and the ship. After it hits the ship it will return to a k-mine '+'. When hit by a k-mine the ship '/\' is returned to the starting position.
 
 If the mine lands on the star gates or the star-port, the mine will destruct with no effect or be whisked away to another galaxy, also not effecting the user.
 
@@ -53,7 +53,7 @@ All game cells are implemented in the Cell class, enabled cells have two functio
 1. Display text
 2. When clicked pass the co-ordinates of itself to the game logic class to handle functionality.
 
-The Logic class handles all the logic for the game. It communicates with the sprite class where sprites are concerned/manipulated.
+The Logic class handles all the logic for the game. It communicates with the sprite class where sprites are concerned/manipulated. It also handles the end-game animations, either for the user or the alien, depending on the victor!
 
 The sprite class handles the display for each of the four sprites: the ship, mines, gates, and the star-port. It also handles their attributes, such as the ship's energy and interaction with mines.
 
