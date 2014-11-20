@@ -20,53 +20,37 @@ public class LogicDriver {
 	
     	int testCount = 0;
     	int errorCount = 0;
-    	int numBuckets = 13;
+    	int numBuckets = 7;
     	int numBoolBuckets = 4;
 
     	//2-d array of integer test buckets, 
     	//[i][0] represents the ith actual value
 		//[i][1] represents the ith expected value
-    	int buckets[][] = new int[numBuckets][testComp];
+    	double buckets[][] = new double[numBuckets][testComp];
     	Boolean boolBuckets[][] = new Boolean [numBoolBuckets][testComp];
     	LogicDriver ld = new LogicDriver();
-		Logic l = new Logic(9,9,100,1000,30);
+		Logic l = new Logic(9,9);
 
     	System.out.println("Begin Test Bench\n");
 
-    	//Test function: int distance(int row, int col)
+    	//Test function: double distance(int row, int col)
     	l.setCoords(0,0);
 
-    	buckets[0][0] = l.distance(0,0);
-    	buckets[0][1] = 0;
-    	buckets[1][0] = l.distance(-5,0);
-    	buckets[1][1] = 5;
-    	buckets[2][0] = l.distance(-5,-1);
-    	buckets[2][1] = 6;
-    	buckets[3][0] = l.distance(-3,2);
-    	buckets[3][1] = 5;
-    	buckets[4][0] = l.distance(2,0);
-    	buckets[4][1] = 2;
-    	buckets[5][0] = l.distance(3,-5);
-    	buckets[5][1] = 8;
-    	buckets[6][0] = l.distance(1,4);
-    	buckets[6][1] = 5;
+    	buckets[0][0] = l.distance(1,2);
+    	buckets[0][1] = 2.23606797749979;
+    	buckets[1][0] = l.distance(-1,2);
+    	buckets[1][1] = 2.23606797749979;
+    	buckets[2][0] = l.distance(-1,-2);
+    	buckets[2][1] = 2.23606797749979;
+    	buckets[3][0] = l.distance(1,-2);
+    	buckets[3][1] = 2.23606797749979;
+    	buckets[4][0] = l.distance(0,0);
+    	buckets[4][1] = 0;
+    	buckets[5][0] = l.distance(2,4);
+    	buckets[5][1] = 4.47213595499958;
+    	buckets[6][0] = l.distance(2,2);
+    	buckets[6][1] = 2.8284271247461903;
     	//End test of function: int distance(int row, int col)
-
-    	//Test function: int handleMine(int x, int y)
-
-    	l.setNewCoords(0,0);
-
-    	buckets[7][0] = l.handleMine(0,0);
-    	buckets[7][1] = 1;
-    	buckets[8][0] = l.handleMine(9,9);
-    	buckets[8][1] = 1;
-    	buckets[9][0] = l.handleMine(8,9);
-    	buckets[9][1] = 1;
-    	buckets[10][0] = l.handleMine(9,8);
-    	buckets[10][1] = 1;
-    	buckets[11][0] = l.handleMine(8,8);
-    	buckets[11][1] = 1;
-    	//End test of function: int handleMine(int x, int y)
 
     	//Test function: boolean starGates(int x, int y)
     	boolBuckets[0][0] = l.starGates(0,0);

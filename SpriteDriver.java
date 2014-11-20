@@ -10,15 +10,15 @@ public class SpriteDriver {
 	
     	int testCount = 0;
     	int errorCount = 0;
-    	int numBoolBuckets = 9;
-    	int numSBuckets = 8;
+    	int numBoolBuckets = 3;
+    	int numSBuckets = 10;
 
     	//2-d array of integer test buckets, 
     	//[i][0] represents the ith actual value
 		//[i][1] represents the ith expected value
     	Boolean boolBuckets[][] = new Boolean [numBoolBuckets][testComp];
     	String sBuckets[][] = new String [numSBuckets][testComp];
-		Sprite s = new Sprite(100,1000,30);
+		Sprite s = new Sprite();
 
     	System.out.println("Begin Test Bench\n");
 
@@ -27,9 +27,9 @@ public class SpriteDriver {
         sBuckets[0][1] = "/\\";
         sBuckets[1][0] = s.getShip();
         sBuckets[1][1] = "/^\\";
-        sBuckets[2][0] = s.getMine();
+        sBuckets[2][0] = s.getKMine();
         sBuckets[2][1] = "+";
-        sBuckets[3][0] = s.getMine();
+        sBuckets[3][0] = s.getKMine();
         sBuckets[3][1] = "-";
         sBuckets[4][0] = s.getGate();
         sBuckets[4][1] = "><";
@@ -39,6 +39,10 @@ public class SpriteDriver {
         sBuckets[6][1] = "0";
         sBuckets[7][0] = s.getPort();
         sBuckets[7][1] = "O";
+        sBuckets[8][0] = s.getLMine();
+        sBuckets[8][1] = "#";
+        sBuckets[9][0] = s.getLMine();
+        sBuckets[9][1] = "+";
         //End test of Sprite character functions
 
         //Test function: boolean enoughFuel(int dist)
@@ -48,29 +52,14 @@ public class SpriteDriver {
         boolBuckets[1][1] = true;
         //End test of function: boolean enoughFuel(int dist)
 
-        //Test function: boolean s.shipDead(int hits)
-        boolBuckets[2][0] = s.shipDead(0);
-        boolBuckets[2][1] = false;
-        boolBuckets[3][0] = s.shipDead(-5);
-        boolBuckets[3][1] = false;
-        boolBuckets[4][0] = s.shipDead(3);
-        boolBuckets[4][1] = false;
-        boolBuckets[5][0] = s.shipDead(4);
-        boolBuckets[5][1] = true;
-        //End test of function: boolean s.shipDead(int hits)
-
         //Test function: boolean s.shipDead()
         //Reset class instances
-        s = new Sprite(100,1000,30);
-        Sprite s2 = new Sprite(20,1000,30);
-        Sprite s3 = new Sprite(10,1000,30);
+        s = new Sprite();
+        Sprite s2 = new Sprite();
+        Sprite s3 = new Sprite();
 
-        boolBuckets[6][0] = s.shipDead();
-        boolBuckets[6][1] = false;
-        boolBuckets[7][0] = s2.shipDead();
-        boolBuckets[7][1] = false;
-        boolBuckets[8][0] = s3.shipDead();
-        boolBuckets[8][1] = true;
+        boolBuckets[2][0] = s.shipDead();
+        boolBuckets[2][1] = false;
         //End test of function: boolean s.shipDead()
 
 
