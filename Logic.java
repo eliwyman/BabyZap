@@ -426,7 +426,7 @@ to handle how the game will react to said mouse action.
     }
 
     private void drawFlag() {
-    //MODIFIES: Draws the FLAG array on the board cells.
+    //MODIFIES: Draws the FLAG text array on the board cells.
 		for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
 			for (int j = 1; j <= WIDTH; j++) {
 				grid[i+1][j].setText(FLAG[ANIMATION_HEIGHT-i][j-1]);
@@ -435,6 +435,9 @@ to handle how the game will react to said mouse action.
     }
 
     public void shipAnimate() {
+    //MODIFIES: modColumns, incrementing the global variable each time the function is called
+    //MODIFIES: gameBoard, adding text to the cells from FLAG array.
+    //EFFECTS: Prints an animation to the screen.
 
     	if (modColumns == WIDTH) {
     		modColumns = 0;
@@ -451,7 +454,6 @@ to handle how the game will react to said mouse action.
 					grid[i][j+1].setText("");
 				}
 				for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
-					//System.out.println("i: "+i+" j: "+j+" offset: "+offset+" ANIMATION_HEIGHT-i: "+ (ANIMATION_HEIGHT-1));
 					grid[i+offset][j+1].setText(FLAG[ANIMATION_HEIGHT-i][j]);
 				}
 			}
@@ -459,6 +461,7 @@ to handle how the game will react to said mouse action.
  	}
 
 	private void drawAlien() {
+	//MODIFIES: Draws the ALIEN text array on the board cells.
 		for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
 			for (int j = 1; j < WIDTH; j++) {
 				grid[i+1][j].setText(ALIEN[ANIMATION_HEIGHT-i][j]);
@@ -466,7 +469,8 @@ to handle how the game will react to said mouse action.
 		}
 	}
 
-    private void openAlien() {
+    private void closeAlien() {
+    //MODIFIES: Draws a closed mouth on the alien written on the board
 
     	grid[2][7].setText("V");
     	grid[4][7].setText(" ");
@@ -474,7 +478,8 @@ to handle how the game will react to said mouse action.
     	grid[7][8].setText(" ");
     }
 
-    private void closeAlien() {
+    private void openAlien() {
+    //MODIFIES: Draws an open mouth and eyes on the alien written on the board
 
     	grid[2][7].setText("_");
     	grid[4][7].setText("0");
