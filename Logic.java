@@ -311,11 +311,9 @@ to handle how the game will react to said mouse action.
 		if(newR == shipR && newC == shipC){
 			sprite.shipHeal();
 		} else if (newR == HEIGHT && newC == WIDTH){
-			sprite.useFuel(dist);
 			turnDisplay("You Won!\n");
 			endGame(true);
 		} else if (LMinePresent(newR, newC)){
-			sprite.useFuel(dist);
 			turnDisplay("We've run into an L_MINE, going down!");
 			printTurn();
 			endGame(false);
@@ -325,7 +323,6 @@ to handle how the game will react to said mouse action.
 			shipC = newC;
 			grid[shipR][shipC].setText(sprite.getShip());
 			mines[shipR-1][shipC-1] = NO_MINE;
-			sprite.useFuel(dist);
 			if (sprite.shipDead()) endGame(false);
 		}
     }
