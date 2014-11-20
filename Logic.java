@@ -49,8 +49,7 @@ to handle how the game will react to said mouse action.
 	private final int SPEED = 2000;
 	private final int PAUSE = 0;
 	//animation variables
-	private Boolean alienWon;
-	private Boolean shipWon;
+	private int modColumns;
 	private final int ANIMATEMODW = 5;
 	private final int ANIMATEMODH = 3;
     private static final int ANIMATION_HEIGHT = 8;
@@ -102,11 +101,8 @@ to handle how the game will react to said mouse action.
 	}
 
 	public void restart(){
-		if (alienWon) {
-			timer.stop();
-			timer2.stop();
-		}
-		shipWon = false;
+		timer.stop();
+		timer2.stop();
 		sprite = new Sprite();
 		mines = new int[HEIGHT][WIDTH];
 		initMines();
@@ -127,7 +123,6 @@ to handle how the game will react to said mouse action.
 		turnDisplay("BabyZap Game, Click a cell!");
 		printTurn();
 		GAME_OVER = false;
-		alienWon = false;
 	}
 
 	public void initBoard(Cell[][] gameBoard, JTextArea field) {
@@ -363,12 +358,27 @@ to handle how the game will react to said mouse action.
 		}
 
 		if(won){
-			shipWon = true;
-			shipAnimate();
+			timer = new Timer(SPEED, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					drawFlag();
+				}
+			});
+			timer.setRepeats(false);
+			timer2 = new Timer(SPEED, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					shipAnimate();
+				}
+			});
+			timer2.setRepeats(true);
+			timer2.setInitialDelay(SPEED);
+
+			timer.start();
+			timer2.start();
 
 		} else {
 
-			alienWon = true;
 			drawAlien();
 
 			timer = new Timer(SPEED, new ActionListener() {
@@ -392,29 +402,38 @@ to handle how the game will react to said mouse action.
     	}
     }
 
-    public void shipAnimate() {
-
-	    //draw the flag
+    private void drawFlag() {
+    	//draw the flag
 		for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
-			for (int j = 1; j < WIDTH; j++) {
-				grid[i+1][j].setText(FLAG[ANIMATION_HEIGHT-i][j]);
+			for (int j = 1; j <= WIDTH; j++) {
+				grid[i+1][j].setText(FLAG[ANIMATION_HEIGHT-i][j-1]);
 			}
 		}
+    }
 
+    public void shipAnimate() {
 
-		for (int modColumns = 3; modColumns < WIDTH; modColumns+=WIDTH/5) {
- 			//redraw a portion of the ship with an offset
-	 		for (int offset = 3; offset > 0; offset++) {
- 				for (int j = WIDTH/(WIDTH/modColumns); j < modColumns; j++) {
- 					for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
- 						System.out.println("i: "+i+" j: "+j+" offset: "+offset);
- 						grid[i+offset][j].setText(FLAG[ANIMATION_HEIGHT-i][j]);
- 					}
- 				}
- 			}
- 		}
+    	if (modColumns == WIDTH) {
+    		modColumns = 0;
+    	} else {
+    		modColumns += WIDTH/5;
+    	}
+
+		for (int offset = 3; offset >= 0; offset--) {
+			for (int j = WIDTH*(modColumns/WIDTH); j < modColumns; j++) {
+				for (int i = 1; i < offset; i++) {
+					grid[i][j+1].setText("");
+				}
+				for (int i = HEIGHT-offset; i <= HEIGHT; i++) {
+					grid[i][j+1].setText("");
+				}
+				for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
+					//System.out.println("i: "+i+" j: "+j+" offset: "+offset+" ANIMATION_HEIGHT-i: "+ (ANIMATION_HEIGHT-1));
+					grid[i+offset][j+1].setText(FLAG[ANIMATION_HEIGHT-i][j]);
+				}
+			}
+		}
  	}
-
 
 	private void drawAlien() {
 		for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
