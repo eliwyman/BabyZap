@@ -1,5 +1,12 @@
-//Program
-//Author: Jim Uhl
+// Program: BabyZap
+// Author: Jim Uhl, Eli Wyman
+// Date: Oct 2014
+//
+// Purpose: This class sets up a board made up of clickable Cell instances. 
+//			It also initializes the Logic class, and adds a JTextArea field and Restart button to the container.
+//
+// Notes:
+// Based on code found in : http:://faculty.csci.viu.ca/~juhl/teaching/331
 
 //awt
 import java.awt.Container;
@@ -9,7 +16,7 @@ import javax.swing.JTextArea;
 import java.awt.BorderLayout;
 
 public class Game extends javax.swing.JPanel
-/* EFFECTS: Draws a grid of buttons that can be used to implement a grid game.
+/* OVERVIEW: Draws a grid of buttons that can be used to implement a grid game.
 */
 {
 	public static final int HEIGHT=11;	// default height and width of the play area

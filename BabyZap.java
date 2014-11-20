@@ -1,5 +1,12 @@
-//Program
-//Author: Jim Uhl
+// Program: BabyZap
+// Author: Jim Uhl/Eli Wyman
+// Date: Oct 2014
+//
+// Purpose: This class implements a JFrame extension for the BabyZap game.
+//          Using containers to add a writable text field for game output.
+//
+// Notes:
+// Based on code found in : http:://faculty.csci.viu.ca/~juhl/teaching/331
 
 //swing
 import javax.swing.JTextArea;

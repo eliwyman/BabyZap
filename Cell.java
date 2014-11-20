@@ -1,5 +1,13 @@
-//Program
-//Author: Jim Uhl
+
+// Program: BabyZap
+// Author: Jim Uhl
+// Date: Oct 2014
+//
+// Purpose: This class implements a Jbutton extension called Cell.
+//			The cell is clickable and will pass it's current row and column to the logic class for handling.
+//
+// Notes:
+// Based on code found in : http:://faculty.csci.viu.ca/~juhl/teaching/331
 
 public class Cell extends javax.swing.JButton implements java.awt.event.ActionListener
 /* OVERVIEW: Implements a button that knows its location in a grid of
@@ -26,9 +34,11 @@ public class Cell extends javax.swing.JButton implements java.awt.event.ActionLi
 	   addActionListener(this);
     }
     public int getRow() {
+    //EFFECTS: Returns this.row to the caller.
 	   return row;
     }
     public int getCol() {
+    //EFFECTS: Returns this.col to the caller.
 	   return col;
     }
     public void actionPerformed(java.awt.event.ActionEvent e) { 

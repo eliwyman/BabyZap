@@ -1,3 +1,11 @@
+// Program: BabyZap
+// Author: Eli Wyman
+// Date: Oct 2014
+//
+// Purpose: This class handles all game logic and interaction for the BabyZap game
+//
+// Notes: N/A
+
 //awt
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -12,13 +20,13 @@ when a cell is clicked it's location is passed to this function
 to handle how the game will react to said mouse action.
 */
 {
+	//Game Board Variables
 	private final int HEIGHT;
 	private final int WIDTH;
-
-
+	//Game Play Variables
 	private final int TURN_LIMIT = 99;
 	private enum END_GAME { WIN, MINE_KILL, L_MINE_KILL, L_MINE_LAND, TURN_LIMIT, FUEL_USED}
-
+	//Game Variables
 	private Sprite sprite;
 	private Cell[][] grid;
 	private JTextArea field;
@@ -93,6 +101,7 @@ to handle how the game will react to said mouse action.
 	}
 
 	private void initMines() {
+	//MODIFIES: mines[][], setting all variables to NO_MINE (empty)
 		for (int i = 0; i < HEIGHT; i++) {
 			for (int j = 0; j < WIDTH; j++) {
 				mines[i][j] = NO_MINE;
@@ -101,6 +110,8 @@ to handle how the game will react to said mouse action.
 	}
 
 	public void restart(){
+		//MODIFIES: All instance variables needed to play the game are reset to their initial state
+		//EFFECTS: Puts the game in it's inital state, allowing the user to once again play
 		timer.stop();
 		timer2.stop();
 		sprite = new Sprite();
@@ -151,9 +162,9 @@ to handle how the game will react to said mouse action.
 	//MODIFIES: newC and newR are set to the new destination of the user.
 	//EFFECTS: Will tell the user they have picked an invalid destination and display their current energy.
 	//EFFECTS: Or, will tell the user they have used up all their turns, and end the game.
-	//EFFECTS: Or, will tell the user they have died and display their current energy, also ending the game.
 	//EFFECTS: Or, will move the user ship to their destination, either where they clicked or the origin if they were hit.
 	//Displaying their energy.
+	//EFFECTS: If the game did not end on this user move, Alien's turn will be started
 
 		newC = col;
 		newR = row;
@@ -180,6 +191,12 @@ to handle how the game will react to said mouse action.
     }
 
     private void AIMove() {
+    //MODIFIES: If the user was in range of an L-mine this turn, the alien will shoot it,
+    //and decrement it's energy accordingly.
+    //Any L-mine that lands a shot will be converted back to a k-mine
+    //MODIFIES: If a k-mine landed on the user, it will damage accordingly
+    //MODIFIES: Turn display is updated and the turn output is printed.
+    //EFFECTS: If possible will plant k-mines, l-mines, or damage, and potentially destroy the user/ship
 
     	//Fire the l-Mine weapons
     	if (fireLMine()) {
@@ -217,7 +234,7 @@ to handle how the game will react to said mouse action.
 	//REQUIRES: int row, indicating where the user clicked, value from 1-9.
 	//REQUIRES: int col, indicating where the user clicked, value from 1-9.
 	//EFFECTS: Returns the distance between current ship co-ordinates and the destination co-ordinates
-    //The algorithm being that a move is equal to the horizontal distance + vertical distance.
+    //The algorithm being that a move is equal to the square root(horizontal distance^2 + vert. distance^2)
 
     	double x1 = row;
     	double x2 = shipR;
@@ -228,6 +245,7 @@ to handle how the game will react to said mouse action.
     }
 
     private Boolean fireLMine() {
+    //EFFECTS: Returns true if the ship has been destroyed 
     	
     	//return false if num == 0
     	if (numLMines == 0) {
@@ -253,6 +271,12 @@ to handle how the game will react to said mouse action.
     }
 
     private Boolean LMineHit(int i, int j, int sev) {
+    //REQUIRES: int i, int j, representing the L-mines location in the mines[][] array
+    //REQUIRES: severity, indicating how severe (close) the ship was hit
+    //MODIFIES: Updates the turn display variable
+    //MODIFIES: reverts the L_MINE back to a K_MINE
+    //MODIFIES: Changes the graphic on the board from and L_Mine to a K_Mine
+    //EFFECTS: Returns true or false if the ship was killed by the severity of the hit
 		turnDisplay("Ship's been hit by an l-mine!");
 		mines[i][j] = K_MINE;
 		numLMines--;
@@ -307,6 +331,8 @@ to handle how the game will react to said mouse action.
     }
 
     private Boolean LMinePresent(int x, int y) {
+    //REQUIRES: int x, int y, indicating an index on the grid
+    //EFFECTS: Returns true or false if an L_MINE is the coordinates given
 
     	return(mines[x-1][y-1] == L_MINE);
     }
@@ -345,7 +371,7 @@ to handle how the game will react to said mouse action.
     private void endGame(Boolean won){
     //REQUIRES: boolean variable indicating if the user won the game.
     //MODIFIES: All board-cells become disabled.
-    //EFFECTS: The game ends with a display message based on whether or not the user won the game.
+    //EFFECTS: The game ends with an animation based on whether or not the user won the game.
 
     	GAME_OVER = true;
 
@@ -403,7 +429,7 @@ to handle how the game will react to said mouse action.
     }
 
     private void drawFlag() {
-    	//draw the flag
+    //MODIFIES: Draws the FLAG array on the board cells.
 		for (int i = 1; i <= ANIMATION_HEIGHT; i++) {
 			for (int j = 1; j <= WIDTH; j++) {
 				grid[i+1][j].setText(FLAG[ANIMATION_HEIGHT-i][j-1]);

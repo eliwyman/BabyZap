@@ -1,8 +1,16 @@
+// Program: BabyZap
+// Author: Eli Wyman
+// Date: Nov 2014
+//
+// Purpose: This class implements a Jbutton extension called Restart
+//          The cell is clickable and will call logic's restart function, effectively restarting the game.
+//
+// Notes:
+// Based on code found in : http:://faculty.csci.viu.ca/~juhl/teaching/331
+
 public class Restart extends javax.swing.JButton implements java.awt.event.ActionListener
-/* OVERVIEW: Implements a button that knows its location in a grid of
-     buttons.  When the button is clicked, it calls userMove on the
-     instance of BabyGame passed in on creation and passes its row and
-     column.
+/* OVERVIEW: Implements a button that, when clicked calls logic.restart(), 
+resetting instance variables and allowing the game to played again.
 */
 {
     private final Logic logic;
@@ -21,7 +29,7 @@ public class Restart extends javax.swing.JButton implements java.awt.event.Actio
 
     public void actionPerformed(java.awt.event.ActionEvent e) { 
     //REQUIRES: ActionEvent 
-    //EFFECTS: Calls the logic class with parameters self.row and self.col
+    //EFFECTS: Calls the logic classes restart function
 	   logic.restart();
     } 
 }
