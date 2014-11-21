@@ -1,0 +1,18 @@
+javac LogicDriver.java
+javac SpriteDriver.java
+java LogicDriver
+Begin Test Bench
+
+End Test Bench
+
+Number of Test Cases: 11
+Number of Test Cases in Error: 0
+
+java SpriteDriver
+Begin Test Bench
+
+End Test Bench
+
+Number of Test Cases: 13
+Number of Test Cases in Error: 0
+

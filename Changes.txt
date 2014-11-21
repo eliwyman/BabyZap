@@ -1,0 +1,20 @@
+This document explains the changes made from the point of forking this repository from the BabyQ Game repository.
+
+All variables through the BabyZap file structure were parsed to find any unnamed variables.
+They were then made either instance constants, instance variables or class variables.
+
+I didn't make any of the constants class variables as there aren't getter methods for class variables, and they are all private. No need for the outside world to know their values.
+
+The game alleviated the functionality of dropping multiple mines per turn, as the user could easily be bombarded and die.
+The game also used a right-angle method for calculating distance between cells, i.e. actual distance between cells via calculating hypotenuse.
+
+The game no longer takes fuel to move, and so the function was just completely removed from the Sprite.java class and it's calls from Logic.java
+
+L-mine's were implemented, and I decided on using a two-dimensional array to store mines.
+Because mines are generated randomly I decided on using this data structure.
+There is extra overhead with this method, and a start-up/reset penalty when setting the array.
+However, when a k-mine is dropped it makes it quick and easy to check whether a k-mine exists in said cell, and thus whether or not to morph it to an l-mine. It also makes it easy to revert back to a k-mine upon shooting the ship, and to check for l-mines and k-mines present when a ship lands on a cell.
+
+After setting all variables to be global, changes made to ship resources, game stats, and functional variables was quite simple.
+
+I also made an animation for both the winner and loser, I stuck to a very simple style animation as I thought it went with the overall feel of the game, which after all is a remake of a 1980's pc game. A more modern animation could have been more appealing and frankly would make for a much easier implementation, but I believed this to have been possible back in the original game.
